@@ -16,7 +16,7 @@
                     <x-table.th>Nomor</x-table.th>
                     <x-table.th>Nama</x-table.th>
                     <x-table.th>Aksi</x-table.th>
-                </x-slot:head>
+                </x-slot:head> 
                 <x-slot:body>
                     @forelse($users as $user)
 
