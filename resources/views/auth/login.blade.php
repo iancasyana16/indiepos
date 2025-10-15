@@ -7,8 +7,7 @@
                 <x-input :type="'text'" :name="'email'" :placeholder="'Email'" />
                 <x-label :for="'password'">Password</x-label>
                 <x-input :type="'password'" :name="'password'" :placeholder="'Password'" />
-                <a href="{{ route('register') }}" class="text-sm text-blue-600 hover:underline mb-2">Don't have an account? Register</a>
-                <x-button :type="'submit'" :variant="'danger'" :class="'w-full'">Login</x-button>
+                <x-button :type="'submit'" :variant="'primary'" :class="'w-full'">Login</x-button>
             </form>
         </div>
     </div>

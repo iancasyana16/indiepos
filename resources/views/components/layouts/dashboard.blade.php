@@ -9,11 +9,9 @@
 </head>
 
 <body class="bg-gray-100">
-    <div class="flex min-h-screen gap-3">
-        <!-- Sidebar -->
-        <x-sidebar />
-        <!-- Main Content -->
-        <div class="flex-1 p-3">
+    <div class="flex min-h-screen">
+        <x-sidebar.sidebar />
+        <div class="flex-1">
             {{ $slot }}
         </div>
     </div>
