@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <x-navbar/>
+    <x-navbar />
     <div class="p-4">
         <div class="flex justify-between items-center">
             <x-search />
@@ -18,12 +18,14 @@
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
+                    @forelse($users as $user)
+
                     <x-table.tr>
-                        <x-table.td>USR001</x-table.td>
-                        <x-table.td>Admin</x-table.td>
-                        <x-table.td>iancasyana@gmail.com</x-table.td>
-                        <x-table.td>083101497425</x-table.td>
-                        <x-table.td>Casyana</x-table.td>
+                        <x-table.td>{{ $user->id }}</x-table.td>
+                        <x-table.td>{{ $user->role }}</x-table.td>
+                        <x-table.td>{{ $user->email }}</x-table.td>
+                        <x-table.td>{{ $user->number }}</x-table.td>
+                        <x-table.td>{{ $user->name }}</x-table.td>
                         <x-table.td>
                             <div class="flex space-x-2">
                                 <x-button :variant="'primary'" size="sm">Edit</x-button>
@@ -31,32 +33,11 @@
                             </div>
                         </x-table.td>
                     </x-table.tr>
+                    @empty
                     <x-table.tr>
-                        <x-table.td>USR002</x-table.td>
-                        <x-table.td>Desainer</x-table.td>
-                        <x-table.td>ilham@gmail.com</x-table.td>
-                        <x-table.td>083101497425</x-table.td>
-                        <x-table.td>Ilham</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
+                        User tidak ditemukan
                     </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>USR003</x-table.td>
-                        <x-table.td>Kasir</x-table.td>
-                        <x-table.td>farhan@gmail.com</x-table.td>
-                        <x-table.td>083101497425</x-table.td>
-                        <x-table.td>Farhan</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
-                    </x-table.tr>
+                    @endforelse
                 </x-slot:body>
             </x-table.table>
         </div>

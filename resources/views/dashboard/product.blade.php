@@ -18,11 +18,13 @@
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
+                    @forelse($products as $product)
+
                     <x-table.tr>
-                        <x-table.td>1</x-table.td>
-                        <x-table.td>Spanduk</x-table.td>
-                        <x-table.td>m2</x-table.td>
-                        <x-table.td>Rp 10.000</x-table.td>
+                        <x-table.td>{{ $product->id }}</x-table.td>
+                        <x-table.td>{{ $product->name }}</x-table.td>
+                        <x-table.td>{{ $product->unit }}</x-table.td>
+                        <x-table.td>Rp {{ $product->price_unit }}</x-table.td>
                         <x-table.td>
                             <div class="flex space-x-2">
                                 <x-button :variant="'primary'" size="sm">Edit</x-button>
@@ -30,30 +32,13 @@
                             </div>
                         </x-table.td>
                     </x-table.tr>
+                    @empty
+
                     <x-table.tr>
-                        <x-table.td>2</x-table.td>
-                        <x-table.td>Baju</x-table.td>
-                        <x-table.td>pcs</x-table.td>
-                        <x-table.td>Rp 80.000</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
+                        <x-table.td>Produk tidak ditemukan</x-table.td>
                     </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>3</x-table.td>
-                        <x-table.td>Gantungan Kunci</x-table.td>
-                        <x-table.td>pcs</x-table.td>
-                        <x-table.td>Rp 5.000</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
-                    </x-table.tr>
+
+                    @endforelse
                 </x-slot:body>
             </x-table.table>
         </div>

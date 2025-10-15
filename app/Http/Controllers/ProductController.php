@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = Product::all();
-        return view('add-user', compact('products'));
+        return view('dashboard.product', compact('products'));
     }
 
 
