@@ -21,9 +21,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        // Jika ada password, hash dulu
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+        // Jika tidak ada password gunakan password default yg dihash
+        if (!isset($data['password'])) {
+            $data['password'] = Hash::make('password123');
         }
 
         User::create($data);

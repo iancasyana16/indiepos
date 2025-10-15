@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class CheckoutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true; // disesuaikan dengan kebutuhan
+        return true;
     }
 
     /**
@@ -22,11 +22,9 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:25',
-            'role' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'number' => 'required|string',
-            'password' => 'nullable|string|min:8',
+            'name' => 'required|string|max:50',
+            'number' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
         ];
     }
 }

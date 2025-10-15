@@ -10,16 +10,16 @@
             <x-sidebar.side-link :route="'dashboard'">
                 Dashboard
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'order'">
+            <x-sidebar.side-link :route="'order.index'">
                 Order
             </x-sidebar.side-link>
             <x-sidebar.side-link :route="'history-order'">
                 History Order
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'product'">
+            <x-sidebar.side-link :route="'product.index'">
                 Produk
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'account'">
+            <x-sidebar.side-link :route="'account.index'">
                 Account
             </x-sidebar.side-link>
             <x-sidebar.side-link :route="'setting'">
