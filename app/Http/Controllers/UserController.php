@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = User::all();
-        return view('add-user', compact('users'));
+        return view('dashboard.account', compact('users'));
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
