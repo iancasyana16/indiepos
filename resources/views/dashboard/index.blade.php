@@ -1,17 +1,10 @@
 <x-layouts.dashboard>
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to IndiePOS Dashboard</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-gray-700">Total Orders</h3>
-            <p class="text-2xl text-indigo-600">150</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-gray-700">Revenue</h3>
-            <p class="text-2xl text-indigo-600">Rp 5,000,000</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-gray-700">Customers</h3>
-            <p class="text-2xl text-indigo-600">50</p>
+    <div class="bg-white shadow-lg h-15 justify-between flex items-center p-4">
+        <h2 class="font-bold text-gray-800">Dashboard</h2>
+        <div class="flex items-center space-x-4">
+            <h2 class="font-bold text-gray-800">Hi, Admin</h2>
+            <img src="https://ui-avatars.com/api/?name=Indie+User&background=4F46E5&color=fff&size=128" alt="Avatar"
+                class="w-10 h-10 rounded-full">
         </div>
     </div>
 </x-layouts.dashboard>

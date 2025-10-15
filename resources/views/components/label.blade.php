@@ -1,5 +1,5 @@
-@props(['for', 'value' => ''])
+@props(['for', 'value' => '', 'class' => ''])
 
-<label for="{{ $for }}" class="block font-medium text-sm text-gray-700">
+<label for="{{ $for }}" class="block font-medium text-sm text-black {{ $class }}">
     {{ $slot }}
 </label>
