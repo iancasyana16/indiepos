@@ -1,5 +1,7 @@
 @props([
+    'as' => 'button',
     'type' => 'button',
+    'href' => '#',
     'class' => '',
     'variant' => 'primary',
     'size' => 'md',
@@ -23,11 +25,22 @@
     $sizeClass = $sizes[$size] ?? $sizes['md'];
 @endphp
 
-<button
-    type="{{ $type }}"
-    {{ $attributes->merge([
-        'class' => "my-2 inline-flex items-center justify-center rounded-md font-medium transition-colors cursor-pointer $variantClass $sizeClass $class"
-    ]) }}
->
-    {{ $slot }}
-</button>
+@if ($as === 'button')
+    <button
+        type="{{ $type }}"
+        {{ $attributes->merge([
+            'class' => "my-2 inline-flex items-center justify-center rounded-md font-medium transition-colors cursor-pointer $variantClass $sizeClass $class"
+        ]) }}
+    >
+        {{ $slot }}
+    </button>
+@else
+    <a
+        href="{{ $href }}"
+        {{ $attributes->merge([
+            'class' => "my-2 inline-flex items-center justify-center rounded-md font-medium transition-colors $variantClass $sizeClass $class"
+        ]) }}
+    >
+        {{ $slot }}
+    </a>
+@endif

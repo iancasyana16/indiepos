@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center">
             <x-search />
             <div class="flex items-center space-x-4">
-                <x-button :variant="'outline'">+ Tambah</x-button>
+                <x-button as="link" :variant="'outline'" href="{{ route('product-add') }}">+ Tambah</x-button>
                 <x-button :variant="'secondary'">Terbaru</x-button>
             </div>
         </div>
@@ -18,44 +18,13 @@
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
-                    <x-table.tr>
-                        <x-table.td>1</x-table.td>
-                        <x-table.td>Spanduk</x-table.td>
-                        <x-table.td>m2</x-table.td>
-                        <x-table.td>Rp 10.000</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>2</x-table.td>
-                        <x-table.td>Baju</x-table.td>
-                        <x-table.td>pcs</x-table.td>
-                        <x-table.td>Rp 80.000</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>3</x-table.td>
-                        <x-table.td>Gantungan Kunci</x-table.td>
-                        <x-table.td>pcs</x-table.td>
-                        <x-table.td>Rp 5.000</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
-                    </x-table.tr>
+                    <!-- isi tabel bang -->
                 </x-slot:body>
             </x-table.table>
+            <!-- KETIKA BELUM ADA DATA TAMPILKAN INI -->
+            <x-noData>
+                Data Produk Belum Ada
+            </x-noData>
         </div>
     </div>
 </x-layouts.dashboard>

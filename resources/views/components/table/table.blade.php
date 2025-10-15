@@ -1,5 +1,5 @@
-<div class="overflow-x-auto rounded shadow-lg">
-    <table class="min-w-full divide-y divide-gray-200 bg-white rounded shadow border-2 border-slate-600">
+<div class="overflow-x-auto rounded-xl shadow-lg">
+    <table class="min-w-full divide-y divide-gray-200 bg-white rounded-xl shadow">
         <thead class="bg-slate-600 text-white">
             {{ $head }}
         </thead>

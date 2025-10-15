@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,9 +17,9 @@ Route::get('/history-order', function () {
 Route::get('/product', function () {
     return view('dashboard.product');
 })->name('product');
-// Route::get('/account', function () {
-//     return view('dashboard.account');
-// })->name('account');
+Route::get('/account', function () {
+    return view('dashboard.account');
+})->name('account');
 Route::get('/setting', function () {
     return view('dashboard.setting');
 })->name('setting');
@@ -41,10 +37,3 @@ Route::get('/account-add', function () {
 Route::get('/account-edit', function () {
     return view('dashboard.editAccount');
 })->name('account-edit');
-
-Route::resource('/account', UserController::class)->names([
-    'index' => 'account',
-    'store' => 'account.store',
-    'update' => 'account.update',
-    'destroy' => 'account.destroy',
-]);
