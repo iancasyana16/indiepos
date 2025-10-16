@@ -4,12 +4,12 @@
         <div class="bg-white p-4 rounded-lg shadow-lg">
             <div class="text-lg font-semibold">Tambah Akun</div>
             <div class="mt-4">
-                <form action="" method="POST">
+                <form action="{{ route('account.store') }}" method="POST">
                     @csrf
                     <x-label for="name" class="font-semibold">Nama</x-label>
                     <x-input id="name" type="text" name="name" />
                     <x-label for="email" class="font-semibold">Email</x-label>
-                    <x-input id="email" type="text" name="email" />
+                    <x-input id="email" type="email" name="email" />
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <x-label for="role" class="font-semibold">Role</x-label>
@@ -17,7 +17,7 @@
                         </div>
                         <div>
                             <x-label for="number" class="font-semibold">Nomor HP</x-label>
-                            <x-input id="number" type="text" name="number" />
+                            <x-input id="number" type="tel" name="number" />
                         </div>
                     </div>
                     <div class="flex justify-end">

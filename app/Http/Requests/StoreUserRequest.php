@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|string|max:25',
             'role' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'number' => 'required|string',
+            'number' => ['required', 'regex:/^(?:\+62|62|0)8[1-9][0-9]{6,11}$/'],
             'password' => 'nullable|string|min:8',
         ];
     }

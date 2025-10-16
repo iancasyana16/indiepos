@@ -17,6 +17,11 @@ class UserController extends Controller
         return view('dashboard.account', compact('users'));
     }
 
+    public function create(): View
+    {
+        return view('dashboard.addAccount');
+    }
+
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $data = $request->validated();
@@ -28,27 +33,32 @@ class UserController extends Controller
 
         User::create($data);
 
-        return redirect()->back()->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('account.index')->with('success', 'User berhasil ditambahkan!');
     }
 
-    public function update(UpdateUserRequest $request, User $user): RedirectResponse
+    public function edit(User $account): View
+    {
+        return view('dashboard.editAccount', compact('account'));
+    }
+
+    public function update(UpdateUserRequest $request, User $account): RedirectResponse
     {
         $data = $request->validated();
 
-        // Jika ada password baru, hash
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
 
-        $user->update($data);
+        $account->update($data);
 
-        return redirect()->back()->with('success', 'Data user berhasil diperbarui!');
+        return redirect()->route('account.index')->with('success', 'Data user berhasil diperbarui!');
     }
 
-    public function destroy(User $user): RedirectResponse
-    {
-        $user->delete();
 
-        return redirect()->back()->with('success', 'User berhasil dihapus!');
+    public function destroy(User $account): RedirectResponse
+    {
+        $account->delete();
+
+        return redirect()->route('account.index')->with('success', 'User berhasil dihapus!');
     }
 }

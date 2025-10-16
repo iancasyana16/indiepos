@@ -8,9 +8,8 @@ class Product extends Model
 {
     protected $fillable = [
         'name',
-        'category',
         'unit',
-        'price',
+        'price_unit',
     ];
 
     public function orderItems()

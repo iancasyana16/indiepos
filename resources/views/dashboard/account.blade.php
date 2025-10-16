@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center">
             <x-search />
             <div class="flex items-center space-x-4">
-                <x-button :as="'link'" :variant="'outline'" href="{{ route('account-add') }}">+ Tambah</x-button>
+                <x-button :as="'link'" :variant="'outline'" href="{{ route('account.create') }}">+ Tambah</x-button>
             </div>
         </div>
         <div class="mt-4">
@@ -19,12 +19,32 @@
                 </x-slot:head>
                 <x-slot:body>
                     <!-- isi tabel bang -->
+                    @forelse($users as $user)
+
+                    <x-table.tr>
+                        <x-table.td>{{ $user->id }}</x-table.td>
+                        <x-table.td>{{ $user->role }}</x-table.td>
+                        <x-table.td>{{ $user->email }}</x-table.td>
+                        <x-table.td>{{ $user->number }}</x-table.td>
+                        <x-table.td>{{ $user->name }}</x-table.td>
+                        <x-table.td>
+                            <x-button as="link" :variant="'primary'" :size="'sm'"
+                                href="{{ route('account.edit', $user->id) }}">
+                                Edit
+                            </x-button>
+                            <x-button type="submit" :variant="'danger'" :size="'sm'">
+                                Hapus
+                            </x-button>
+                        </x-table.td>
+                    </x-table.tr>
+                    @empty
+                    <!-- KETKA BELUM ADA DATA TAMPILKAN INI -->
+                    <x-noData>
+                        Data User Belum Ada
+                    </x-noData>
+                    @endforelse
                 </x-slot:body>
             </x-table.table>
-            <!-- KETKA BELUM ADA DATA TAMPILKAN INI -->
-            <x-noData>
-                Data User Belum Ada
-            </x-noData>
         </div>
     </div>
 </x-layouts.dashboard>

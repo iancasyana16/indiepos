@@ -23,9 +23,8 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string|max:15',
-            'category' => 'nullable|string',
             'unit' => 'nullable|string',
-            'price' => 'nullable|numeric|',
+            'price_unit' => 'nullable|numeric|',
         ];
     }
 }

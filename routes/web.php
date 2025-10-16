@@ -46,8 +46,8 @@ Route::get('/account-edit', function () {
 
 
 // Route Sementara Ilham
-Route::resource('account', UserController::class)->only('index', 'store', 'update', 'destroy');
-Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::resource('account', UserController::class);
+Route::resource('product', ProductController::class);
 
 
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');

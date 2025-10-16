@@ -24,8 +24,8 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nullable|string|max:25',
             'role' => 'nullable|string',
-            'email' => 'nullable|email|unique:users,email',
-            'number' => 'nullable|string',
+            'email' => 'nullable|email|unique:users,email,' . $this->route('account')->id,
+            'number' => ['nullable', 'regex:/^(?:\+62|62|0)8[1-9][0-9]{6,11}$/'],
             'password' => 'nullable|string|min:8',
         ];
     }
