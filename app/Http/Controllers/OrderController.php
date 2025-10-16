@@ -16,7 +16,9 @@ class OrderController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('dashboard.order', compact('products'));
+        $cart = session('cart', []);
+
+        return view('dashboard.order', compact('products', 'cart'));
     }
 
     // Tambahkan produk ke keranjang
@@ -37,14 +39,7 @@ class OrderController extends Controller
 
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang!');
-    }
-
-    // Tampilkan isi keranjang
-    public function showCart()
-    {
-        $cart = session('cart', []);
-        return view('dashboard.cart', compact('cart'));
+        return redirect()->route('order.index')->with('success', 'Produk ditambahkan ke keranjang!');
     }
 
     // Proses checkout
@@ -104,5 +99,4 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
 }

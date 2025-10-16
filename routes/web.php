@@ -1,5 +1,8 @@
 <?php
 
+
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Models\Product;
 use App\Models\User;
@@ -43,13 +46,10 @@ Route::get('/account-edit', function () {
 
 
 // Route Sementara Ilham
-Route::resource('/account', UserController::class)->only('index', 'store', 'update', 'destroy');
-Route::resource('/product', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::resource('account', UserController::class)->only('index', 'store', 'update', 'destroy');
+Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
 
 
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::post('/order/add/{product}', [OrderController::class, 'addToCart'])->name('order.add');
-Route::get('/order/cart', [OrderController::class, 'showCart'])->name('order.cart');
 Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
-
-

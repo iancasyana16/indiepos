@@ -13,7 +13,7 @@
                 <x-label for="email">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit minima
                     ullam aut
                     saepe molestias ea illo voluptate culpa optio perspiciatis?</x-label>
-                <x-input id="email" type="text" name="email" />
+                <x-input id="email" type="email" name="email" />
                 <div class="flex gap-3">
                     <div>
                         <x-label for="role" class="font-semibold">Role</x-label>

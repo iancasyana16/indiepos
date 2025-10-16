@@ -9,5 +9,5 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
-Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
+// Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
+// Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
