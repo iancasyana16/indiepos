@@ -23,9 +23,9 @@ Route::get('/history-order', function () {
 Route::get('/product', function () {
     return view('dashboard.product');
 })->name('product');
-// Route::get('/account', function () {
-//     return view('dashboard.account');
-// })->name('account');
+Route::get('/account', function () {
+    return view('dashboard.account');
+})->name('account');
 Route::get('/setting', function () {
     return view('dashboard.setting');
 })->name('setting');

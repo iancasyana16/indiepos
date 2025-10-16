@@ -7,89 +7,22 @@
         </div>
         <div class="mt-4">
             <x-table.table>
-                <x-slot name="head">
+                <x-slot:head>
                     <x-table.th>ID</x-table.th>
                     <x-table.th>Nama</x-table.th>
                     <x-table.th>Detail</x-table.th>
                     <x-table.th>Total</x-table.th>
                     <x-table.th>Tanggal</x-table.th>
                     <x-table.th>Status</x-table.th>
-                </x-slot>
-                <x-slot name="body">
-                    <x-table.tr>
-                        <x-table.td>TRX00211</x-table.td>
-                        <x-table.td>Parhan</x-table.td>
-                        <x-table.td>Banner 2x1</x-table.td>
-                        <x-table.td>Rp25.000</x-table.td>
-                        <x-table.td>20-06-2024</x-table.td>
-                        <x-table.td>
-                            <span class="px-3 inline-flex leading-5 font-semibold text-xs rounded-full bg-green-100 text-green-800">
-                                order
-                            </span>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>TRX00211</x-table.td>
-                        <x-table.td>Parhan</x-table.td>
-                        <x-table.td>Banner 2x1</x-table.td>
-                        <x-table.td>Rp25.000</x-table.td>
-                        <x-table.td>20-06-2024</x-table.td>
-                        <x-table.td>
-                            <span class="px-3 inline-flex leading-5 font-semibold text-xs rounded-full bg-green-100 text-green-800">
-                                order
-                            </span>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>TRX00211</x-table.td>
-                        <x-table.td>Parhan</x-table.td>
-                        <x-table.td>Banner 2x1</x-table.td>
-                        <x-table.td>Rp25.000</x-table.td>
-                        <x-table.td>20-06-2024</x-table.td>
-                        <x-table.td>
-                            <span class="px-3 inline-flex leading-5 font-semibold text-xs rounded-full bg-green-100 text-green-800">
-                                order
-                            </span>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>TRX00211</x-table.td>
-                        <x-table.td>Parhan</x-table.td>
-                        <x-table.td>Banner 2x1</x-table.td>
-                        <x-table.td>Rp25.000</x-table.td>
-                        <x-table.td>20-06-2024</x-table.td>
-                        <x-table.td>
-                            <span class="px-3 inline-flex leading-5 font-semibold text-xs rounded-full bg-green-100 text-green-800">
-                                order
-                            </span>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>TRX00211</x-table.td>
-                        <x-table.td>Parhan</x-table.td>
-                        <x-table.td>Banner 2x1</x-table.td>
-                        <x-table.td>Rp25.000</x-table.td>
-                        <x-table.td>20-06-2024</x-table.td>
-                        <x-table.td>
-                            <span class="px-3 inline-flex leading-5 font-semibold text-xs rounded-full bg-green-100 text-green-800">
-                                order
-                            </span>
-                        </x-table.td>
-                    </x-table.tr>
-                    <x-table.tr>
-                        <x-table.td>TRX00211</x-table.td>
-                        <x-table.td>Parhan</x-table.td>
-                        <x-table.td>Banner 2x1</x-table.td>
-                        <x-table.td>Rp25.000</x-table.td>
-                        <x-table.td>20-06-2024</x-table.td>
-                        <x-table.td>
-                            <span class="px-3 inline-flex leading-5 font-semibold text-xs rounded-full bg-green-100 text-green-800">
-                                order
-                            </span>
-                        </x-table.td>
-                    </x-table.tr>
-                </x-slot>
+                </x-slot:head>
+                <x-slot:body>
+                    <!-- isi tabel bang -->
+                </x-slot:body>
             </x-table.table>
+            <!-- KETIKA BELUM ADA DATA TAMPILKAN INI -->
+            <x-noData>
+                Data Riwayat Order Belum Ada
+            </x-noData>
         </div>
     </div>
 </x-layouts.dashboard>

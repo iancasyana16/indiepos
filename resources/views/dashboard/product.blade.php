@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center">
             <x-search />
             <div class="flex items-center space-x-4">
-                <x-button :variant="'outline'">+ Tambah</x-button>
+                <x-button as="link" :variant="'outline'" href="{{ route('product-add') }}">+ Tambah</x-button>
                 <x-button :variant="'secondary'">Terbaru</x-button>
             </div>
         </div>
@@ -18,29 +18,13 @@
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
-                    @forelse($products as $product)
-
-                    <x-table.tr>
-                        <x-table.td>{{ $product->id }}</x-table.td>
-                        <x-table.td>{{ $product->name }}</x-table.td>
-                        <x-table.td>{{ $product->unit }}</x-table.td>
-                        <x-table.td>Rp {{ $product->price_unit }}</x-table.td>
-                        <x-table.td>
-                            <div class="flex space-x-2">
-                                <x-button :variant="'primary'" size="sm">Edit</x-button>
-                                <x-button :variant="'danger'" size="sm">Hapus</x-button>
-                            </div>
-                        </x-table.td>
-                    </x-table.tr>
-                    @empty
-
-                    <x-table.tr>
-                        <x-table.td>Produk tidak ditemukan</x-table.td>
-                    </x-table.tr>
-
-                    @endforelse
+                    <!-- isi tabel bang -->
                 </x-slot:body>
             </x-table.table>
+            <!-- KETIKA BELUM ADA DATA TAMPILKAN INI -->
+            <x-noData>
+                Data Produk Belum Ada
+            </x-noData>
         </div>
     </div>
 </x-layouts.dashboard>
