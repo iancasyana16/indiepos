@@ -25,6 +25,7 @@ class CheckoutRequest extends FormRequest
             'name' => 'required|string|max:50',
             'number' => 'required|string|max:20',
             'address' => 'required|string|max:255',
+            'dp_total' => 'required|numeric|min:0'
         ];
     }
 }

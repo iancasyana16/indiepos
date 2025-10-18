@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
@@ -60,5 +61,14 @@ class UserController extends Controller
         $account->delete();
 
         return redirect()->route('account.index')->with('success', 'User berhasil dihapus!');
+    }
+
+    public function resetPassword(User $account):RedirectResponse
+    {
+        $newPassword = 'password123';
+        $account->update([
+            'password' => [Hash::make($newPassword)],
+        ]);
+        return redirect()->route('account.index')->with('success', 'Password user berhasil direset!');
     }
 }

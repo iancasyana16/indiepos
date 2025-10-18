@@ -9,6 +9,7 @@ class Order extends Model
     protected $fillable = [
         'customer_id',
         'price_total',
+        'dp_total',
         'order_date',
         'status'
     ];

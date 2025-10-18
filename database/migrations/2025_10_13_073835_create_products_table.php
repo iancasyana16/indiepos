@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Nama bahan, Flexi china, plastisol, dll
-            // $table->string('category'); // Banner, Stiker, Kartu nama
+            $table->string('name');
             $table->enum('unit', ['cm2', 'm2', 'pcs']);
             $table->decimal('price_unit', 15, 2);
             $table->timestamps();

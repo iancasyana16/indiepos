@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -46,16 +47,20 @@ class OrderController extends Controller
     public function checkout(CheckoutRequest $request)
     {
         $validated = $request->validated();
-        $cart = session('cart', []);
+        //     $cart = session('cart', []);
 
-        if (empty($cart)) {
-            return redirect()->back()->with('error', 'Keranjang masih kosong.');
-        }
+        //     if (empty($cart)) {
+        //         return redirect()->back()->with('error', 'Keranjang masih kosong.');
+        //     }
+
+        $cart = [
+            3 => ['name' => 'Banner', 'length' => 5, 'width' => 3, 'qty' => 1],
+            1 => ['name' => 'Kartu Nama', 'qty' => 1],
+        ];
 
         DB::beginTransaction();
 
         try {
-            // Cek apakah customer sudah terdaftar
             $customer = Customer::firstOrCreate(
                 ['number' => $validated['number']],
                 [
@@ -64,39 +69,67 @@ class OrderController extends Controller
                 ]
             );
 
-            // Buat order baru
             $order = Order::create([
                 'customer_id' => $customer->id,
                 'order_date' => now(),
-                'status' => 'menunggu desain',
-                'price_total' => 0, // sementara, nanti diupdate
+                'status' => 'dipesan',
+                'price_total' => 0,
+                'dp_total' => $validated['dp_total'],
             ]);
 
             $total = 0;
 
-            // Simpan item satu per satu
             foreach ($cart as $productId => $item) {
-                $subtotal = $item['price'] * $item['qty'];
+                $product = Product::find($productId);
+                if (!$product) {
+                    throw new \Exception("Produk dengan ID {$productId} tidak ditemukan");
+                }
+
+                // Validasi dimensi jika satuan m2
+                if ($product->unit === 'm2' && (!isset($item['length']) || !isset($item['width']))) {
+                    throw new \Exception("Produk {$product->name} memerlukan panjang dan lebar.");
+                }
+
+                // Hitung subtotal
+                if ($product->unit === 'm2') {
+                    $subtotal = $item['length'] * $item['width'] * $product->price_unit * $item['qty'];
+                } elseif ($product->unit === 'cm2') {
+                    $area_m2 = ($item['length'] * $item['width']) / 10000;
+                    $subtotal = $area_m2 * $product->price_unit * $item['qty'];
+                } else {
+                    $subtotal = $product->price_unit * $item['qty'];
+                }
+
                 $total += $subtotal;
 
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $productId,
+                    'length' => $item['length'] ?? null,
+                    'width' => $item['width'] ?? null,
                     'qty' => $item['qty'],
                     'price' => $subtotal,
                 ]);
             }
 
-            // Update total harga order
             $order->update(['price_total' => $total]);
 
             DB::commit();
-            session()->forget('cart');
 
-            return redirect()->route('orders.success')->with('success', 'Pesanan berhasil dibuat!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Pesanan berhasil dibuat!',
+                'order' => $order,
+                'customer' => $customer,
+                'cart' => $cart,
+                'total_harga' => $total
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
         }
     }
 }

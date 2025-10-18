@@ -16,12 +16,13 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->date('order_date')->default(now());
             $table->decimal('price_total', 15, 2)->default(0);
+            $table->decimal('dp_total', 15, 2)->default(0);
             $table->enum('status', [
-                'menunggu desain',
-                'proses desain',
+                'dipesan',
+                'didesain',
                 'selesai',
-                'dibayar'
-            ])->default('menunggu desain');
+                'lunas'
+            ])->default('dipesan');
             $table->timestamps();
         });
     }

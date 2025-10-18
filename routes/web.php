@@ -1,55 +1,31 @@
 <?php
 
-
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
-use App\Models\Product;
-use App\Models\User;
+use App\Http\Controllers\Admin\HistoryOrderController as AdminHistoryOrderController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('auth.login');
-})->name('login');
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->name('dashboard');
-Route::get('/order', function () {
-    return view('dashboard.order');
-})->name('order');
-Route::get('/history-order', function () {
-    return view('dashboard.historyOrder');
-})->name('history-order');
-Route::get('/product', function () {
-    return view('dashboard.product');
-})->name('product');
-Route::get('/account', function () {
-    return view('dashboard.account');
-})->name('account');
-Route::get('/setting', function () {
-    return view('dashboard.setting');
-})->name('setting');
+
+Route::get('/login', [AuthController::class, 'index'])->name('login.index');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::resource('dashboard', DashboardController::class)->only('index');
+Route::resource('setting', SettingController::class);
 
 
-Route::get('/product-add', function () {
-    return view('dashboard.addProduct');
-})->name('product-add');
-Route::get('/product-edit', function () {
-    return view('dashboard.editProduct');
-})->name('product-edit');
-Route::get('/account-add', function () {
-    return view('dashboard.addAccount');
-})->name('account-add');
-Route::get('/account-edit', function () {
-    return view('dashboard.editAccount');
-})->name('account-edit');
+// Route Admin
+Route::prefix('admin')->group(function () {
+    Route::resource('account', AdminUserController::class);
+    Route::post('account/{account}/reset-password', [AdminUserController::class, 'resetPassword'])->name('account.reset-password');
+    Route::resource('product', AdminProductController::class);
+    Route::get('/order', [AdminOrderController::class, 'index'])->name('order.index');
+    Route::post('/order/add/{product}', [AdminOrderController::class, 'addToCart'])->name('order.add');
+    Route::post('/order/checkout', [AdminOrderController::class, 'checkout'])->name('order.checkout');
+    Route::resource('history-order', AdminHistoryOrderController::class);
+});
 
-
-// Route Sementara Ilham
-Route::resource('account', UserController::class);
-Route::resource('product', ProductController::class);
-
-
-Route::get('/order', [OrderController::class, 'index'])->name('order.index');
-Route::post('/order/add/{product}', [OrderController::class, 'addToCart'])->name('order.add');
-Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');

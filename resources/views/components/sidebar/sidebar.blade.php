@@ -7,13 +7,13 @@
     <!-- Navigation Section -->
     <nav class="p-4">
         <div class="flex flex-col items-start justify-center h-full">
-            <x-sidebar.side-link :route="'dashboard'">
+            <x-sidebar.side-link :route="'dashboard.index'">
                 Dashboard
             </x-sidebar.side-link>
             <x-sidebar.side-link :route="'order.index'">
                 Order
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'history-order'">
+            <x-sidebar.side-link :route="'history-order.index'">
                 History Order
             </x-sidebar.side-link>
             <x-sidebar.side-link :route="'product.index'">
@@ -22,7 +22,7 @@
             <x-sidebar.side-link :route="'account.index'">
                 Account
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'setting'">
+            <x-sidebar.side-link :route="'setting.index'">
                 Setting
             </x-sidebar.side-link>
         </div>
