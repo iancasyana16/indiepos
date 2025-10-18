@@ -18,15 +18,27 @@
                         </div>
                         <div>
                             <x-label for="nomorHp" class="font-semibold">Nomor HP</x-label>
-                            <x-input id="nomorHp" type="tel" name="number" value="{{ old('number', $account->number) }}" />
+                            <x-input id="nomorHp" type="tel" name="number"
+                                value="{{ old('number', $account->number) }}" />
                         </div>
                     </div>
+                    <x-button variant="secondary">Reset Password</x-button>
                     <div class="flex justify-end space-x-2">
-                        <x-button :variant="'danger'">Delete</x-button>
+                        <x-button type="button" onclick="openModal('deleteModal')" :variant="'danger'" :size="'sm'">Delete</x-button>
                         <x-button :type="'submit'" :variant="'primary'">Save</x-button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <x-modal id="deleteModal">
+        <div class="mt-6 flex justify-center space-x-2">
+            <x-button onclick="closeModal('deleteModal')" :variant="'secondary'">Batal</x-button>
+            <form action="{{ route('account.destroy', $account->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <x-button type="submit" :variant="'danger'">Hapus</x-button>
+            </form>
+        </div>
+    </x-modal>
 </x-layouts.dashboard>

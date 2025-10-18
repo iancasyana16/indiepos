@@ -1,5 +1,6 @@
 <x-layouts.dashboard>
     <x-navbar />
+    <x-toast />
     <div class="p-4">
         <div class="flex justify-between items-center">
             <x-search />
@@ -18,33 +19,39 @@
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
-                    <!-- isi tabel bang -->
-                    @forelse($users as $user)
-
-                    <x-table.tr>
-                        <x-table.td>{{ $user->id }}</x-table.td>
-                        <x-table.td>{{ $user->role }}</x-table.td>
-                        <x-table.td>{{ $user->email }}</x-table.td>
-                        <x-table.td>{{ $user->number }}</x-table.td>
-                        <x-table.td>{{ $user->name }}</x-table.td>
-                        <x-table.td>
-                            <x-button as="link" :variant="'primary'" :size="'sm'"
-                                href="{{ route('account.edit', $user->id) }}">
-                                Edit
-                            </x-button>
-                            <x-button type="submit" :variant="'danger'" :size="'sm'">
-                                Hapus
-                            </x-button>
-                        </x-table.td>
-                    </x-table.tr>
-                    @empty
-                    <!-- KETKA BELUM ADA DATA TAMPILKAN INI -->
-                    <x-noData>
-                        Data User Belum Ada
-                    </x-noData>
-                    @endforelse
+                    @foreach($users as $user)
+                        <x-table.tr>
+                            <x-table.td>{{ $user->id }}</x-table.td>
+                            <x-table.td>{{ $user->role }}</x-table.td>
+                            <x-table.td>{{ $user->email }}</x-table.td>
+                            <x-table.td>{{ $user->number }}</x-table.td>
+                            <x-table.td>{{ $user->name }}</x-table.td>
+                            <x-table.td>
+                                <x-button as="link" :variant="'primary'" :size="'sm'"
+                                    href="{{ route('account.edit', $user->id) }}">
+                                    Edit
+                                </x-button>
+                                <x-button type="button" onclick="openModal('deleteModal')" :variant="'danger'" :size="'sm'">
+                                    Hapus
+                                </x-button>
+                            </x-table.td>
+                        </x-table.tr>
+                        <x-modal id="deleteModal">
+                            <div class="mt-6 flex justify-center space-x-2">
+                                <x-button onclick="closeModal('deleteModal')" :variant="'secondary'">Batal</x-button>
+                                <form action="{{ route('account.destroy', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button type="submit" :variant="'danger'">Hapus</x-button>
+                                </form>
+                            </div>
+                        </x-modal>
+                    @endforeach
                 </x-slot:body>
             </x-table.table>
+            @if ($users->isEmpty())
+                <x-noData>Data User Belum Ada</x-noData>
+            @endif
         </div>
     </div>
 </x-layouts.dashboard>

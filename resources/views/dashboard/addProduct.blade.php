@@ -10,12 +10,12 @@
                     <x-input id="product_name" type="text" name="name" />
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <x-label for="harga" class="font-semibold">Harga</x-label>
-                            <x-input id="harga" type="number" name="price_unit" />
+                            <x-label for="unit" class="font-semibold">Unit</x-label>
+                            <x-select id="unit" :name="'unit'" :options="['pcs' => 'pcs', 'm2' => 'm2']" />
                         </div>
                         <div>
-                            <x-label for="unit" class="font-semibold">Unit</x-label>
-                            <x-input id="unit" type="text" name="unit" />
+                            <x-label for="harga" class="font-semibold">Harga</x-label>
+                            <x-input id="harga" type="number" name="price_unit" />
                         </div>
                     </div>
                     <div class="flex justify-end">

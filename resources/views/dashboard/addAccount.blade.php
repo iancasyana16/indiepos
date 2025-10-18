@@ -13,7 +13,7 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <x-label for="role" class="font-semibold">Role</x-label>
-                            <x-input id="role" type="text" name="role" />
+                            <x-select id="role" name="role" :options="['admin' => 'admin', 'desainer' => 'desainer', 'kasir' => 'kasir']" />
                         </div>
                         <div>
                             <x-label for="number" class="font-semibold">Nomor HP</x-label>
