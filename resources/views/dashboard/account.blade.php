@@ -42,6 +42,7 @@
                                 <form action="{{ route('account.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                    <x-slot name="title">Hapus User</x-slot>
                                     <x-button type="submit" :variant="'danger'">Hapus</x-button>
                                 </form>
                             </div>

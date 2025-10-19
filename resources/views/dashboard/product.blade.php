@@ -41,6 +41,7 @@
                                 <form action="{{ route('product.destroy', $product->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                    <x-slot name="title">Konfirmasi Hapus</x-slot>
                                     <x-button type="submit" :variant="'danger'">Hapus</x-button>
                                 </form>
                             </div>

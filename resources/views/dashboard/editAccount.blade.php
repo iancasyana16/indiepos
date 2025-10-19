@@ -22,9 +22,12 @@
                                 value="{{ old('number', $account->number) }}" />
                         </div>
                     </div>
-                    <x-button variant="secondary">Reset Password</x-button>
+                    <div class="mt-1">
+                        <x-button :type="'button'" :variant="'secondary'" onclick="openModal('resetPasswordModal')">Reset Password</x-button>
+                    </div>
                     <div class="flex justify-end space-x-2">
-                        <x-button type="button" onclick="openModal('deleteModal')" :variant="'danger'" :size="'sm'">Delete</x-button>
+                        <x-button type="button" onclick="openModal('deleteModal')" :variant="'danger'"
+                            :size="'sm'">Delete</x-button>
                         <x-button :type="'submit'" :variant="'primary'">Save</x-button>
                     </div>
                 </form>
@@ -37,7 +40,18 @@
             <form action="{{ route('account.destroy', $account->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
+                <x-slot name="title">Hapus User</x-slot>
                 <x-button type="submit" :variant="'danger'">Hapus</x-button>
+            </form>
+        </div>
+    </x-modal>
+    <x-modal id="resetPasswordModal">
+        <div class="mt-6 flex justify-center space-x-2">
+            <x-button onclick="closeModal('resetPasswordModal')" :variant="'secondary'">Batal</x-button>
+            <form action="{{ route('account.reset-password', $account->id) }}" method="POST">
+                @csrf
+                <x-slot name="title">Reset Password</x-slot>
+                <x-button type="submit" :variant="'danger'">Reset</x-button>
             </form>
         </div>
     </x-modal>
