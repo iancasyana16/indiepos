@@ -116,6 +116,8 @@ class OrderController extends Controller
 
             DB::commit();
 
+            session()->forget('cart');
+
             return response()->json([
                 'success' => true,
                 'message' => 'Pesanan berhasil dibuat!',
@@ -131,5 +133,12 @@ class OrderController extends Controller
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+
+    public function clearCart()
+    {
+        session()->forget('cart');
+        return redirect()->route('order.index')->with('success', 'Keranjang dikosongkan!');
     }
 }

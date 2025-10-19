@@ -25,6 +25,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('product', AdminProductController::class);
     Route::get('/order', [AdminOrderController::class, 'index'])->name('order.index');
     Route::post('/order/add/{product}', [AdminOrderController::class, 'addToCart'])->name('order.add');
+    Route::delete('/order/cart', [AdminOrderController::class, 'clearCart'])->name('order.cart.clear');
     Route::post('/order/checkout', [AdminOrderController::class, 'checkout'])->name('order.checkout');
     Route::resource('history-order', AdminHistoryOrderController::class);
 });
