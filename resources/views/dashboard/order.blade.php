@@ -15,10 +15,34 @@
                                         <p>Rp {{ $product->price_unit }}/</p>
                                         <p>{{ $product->unit }}</p>
                                     </div>
-                                    <form action="{{ route('order.add', $product->id) }}" method="POST">
-                                        @csrf
-                                        <x-button :type="'submit'" :variant="'primary'" :size="'sm'">+</x-button>
-                                    </form>
+                                    <x-button :type="'button'" :variant="'primary'" :size="'sm'"
+                                        onclick="openModal('modal-{{ $product->id }}')">+</x-button>
+                                    <x-modal :id="'modal-' . $product->id" :title="'Tambah ' . $product->name">
+                                        <form action="{{ route('order.add', $product->id) }}" method="POST"
+                                            class="space-y-4">
+                                            @csrf
+                                            <div>
+                                                @if ($product->unit === 'm2')
+                                                    <label for="length" class="block font-medium mb-1">length</label>
+                                                    <input type="number" name="length" id="length" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                    <label for="width" class="block font-medium mb-1">width</label>
+                                                    <input type="number" name="width" id="width" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                @else
+                                                    <label for="qty" class="block font-medium mb-1">qty</label>
+                                                    <input type="number" name="qty" id="qty" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                @endif
+                                            </div>
+                                            <div class="flex justify-end space-x-2">
+                                                <x-button :type="'button'" :variant="'secondary'" :size="'sm'"
+                                                    onclick="closeModal('modal-{{ $product->id }}')">Cancel</x-button>
+                                                <x-button :type="'submit'" :variant="'primary'" :size="'sm'">Add to
+                                                    Cart</x-button>
+                                            </div>
+                                        </form>
+                                    </x-modal>
                                 </div>
                             </div>
                         </div>
@@ -32,9 +56,13 @@
                     <div class="font-semibold">New Order</div>
                     <div class="flex justify-between items-center">
                         <div class="font-semibold">Admin</div>
-                        <x-button :variant="'danger'" :size="'sm'">
-                            Hapus Semua
-                        </x-button>
+                        <form action="{{ route('order.cart.clear') }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <x-button :type="'submit'" :variant="'danger'" :size="'sm'">
+                                Hapus Semua
+                            </x-button>
+                        </form>
                     </div>
                 </div>
                 <div class="space-y-2">
@@ -79,11 +107,32 @@
                         </div>
                     </div>
                 </div>
-                <x-button :variant="'primary'" :size="'md'" class="w-full">
+                <x-button :type="'button'" :variant="'primary'" :size="'md'" class="w-full"
+                    onclick="openModal('orderModal')">
                     Create Order
                 </x-button>
+                <x-modal id="orderModal" title="Create Order">
+                    <label for="name" class="block font-medium mb-1">name</label>
+                    <input type="text" name="name" id="name"
+                        class="w-full border border-gray-300 rounded-md p-2">
+                    <label for="number" class="block font-medium mb-1">number</label>
+                    <input type="number" name="number" id="number"
+                        class="w-full border border-gray-300 rounded-md p-2">
+                    <label for="address" class="block font-medium mb-1">address</label>
+                    <input type="text" name="address" id="address"
+                        class="w-full border border-gray-300 rounded-md p-2">
+                    <label for="dp_total" class="block font-medium mb-1">dp total</label>
+                    <input type="text" name="dp_total" id="dp_total"
+                        class="w-full border border-gray-300 rounded-md p-2">
+                    <div class="mt-6 flex justify-end space-x-2">
+                        <x-button onclick="closeModal('orderModal')" :variant="'secondary'">Batal</x-button>
+                        <form action="{{ route('order.checkout') }}" method="POST">
+                            @csrf
+                            <x-button type="submit" :variant="'primary'">Confirm</x-button>
+                        </form>
+                    </div>
+                </x-modal>
             </div>
         </div>
-    </div>
     </div>
 </x-layouts.dashboard>
