@@ -26,6 +26,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/order', [AdminOrderController::class, 'index'])->name('order.index');
     Route::post('/order/add/{product}', [AdminOrderController::class, 'addToCart'])->name('order.add');
     Route::delete('/order/cart', [AdminOrderController::class, 'clearCart'])->name('order.cart.clear');
+    Route::post('/order/cart/increment/{id}', [AdminOrderController::class, 'incrementCart'])->name('order.cart.increment');
+    Route::post('/order/cart/decrement/{id}', [AdminOrderController::class, 'decrementCart'])->name('order.cart.decrement');
     Route::post('/order/checkout', [AdminOrderController::class, 'checkout'])->name('order.checkout');
     Route::resource('history-order', AdminHistoryOrderController::class);
 });

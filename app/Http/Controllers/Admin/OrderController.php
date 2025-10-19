@@ -43,6 +43,32 @@ class OrderController extends Controller
         return redirect()->route('order.index')->with('success', 'Produk ditambahkan ke keranjang!');
     }
 
+    public function incrementCart($id)
+    {
+        $cart = session('cart', []);
+        if(isset($cart[$id])) {
+            $cart[$id]['qty'] += 1;
+            session(['cart' => $cart]);
+        }
+
+        return back();
+    }
+
+    public function decrementCart($id)
+    {
+        $cart = session('cart', []);
+        if(isset($cart[$id])){
+            if($cart[$id]['qty'] > 1) {
+                $cart[$id]['qty'] -= 1;
+            } else {
+                unset($cart[$id]);
+            }
+            session(['cart' => $cart]);
+        }
+
+        return back();
+    }
+
     // Proses checkout
     public function checkout(CheckoutRequest $request)
     {
