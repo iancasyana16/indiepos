@@ -77,9 +77,15 @@
                                 <div class="flex justify-between items-center">
                                     <div class="font-semibold">{{ $item['name'] }}</div>
                                     <div class="flex items-center space-x-2">
-                                        <x-button :variant="'primary'" :size="'sm'">-</x-button>
+                                        <form action="{{ route('order.cart.decrement', $id) }}" method="post">
+                                            @csrf
+                                            <x-button type="submit" :variant="'primary'" :size="'sm'">-</x-button>
+                                        </form>
                                         <div class="font-semibold">{{ $item['qty'] }}</div>
-                                        <x-button :variant="'primary'" :size="'sm'">+</x-button>
+                                        <form action="{{ route('order.cart.increment', $id) }}" method="post">
+                                            @csrf
+                                            <x-button type="submit" :variant="'primary'" :size="'sm'">+</x-button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +98,6 @@
                         <div class="flex justify-between items-center">
                             <div class="font-semibold text-xs mb-1">
                                 <div class="Banner">{{ $item['name'] }} x {{ $item['qty'] }}</div>
-                                <div class="Banner">2mx2m</div>
                             </div>
                             <div class="font-semibold text-xs">
                                 {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
@@ -113,14 +118,11 @@
                 </x-button>
                 <x-modal id="orderModal" title="Create Order">
                     <label for="name" class="block font-medium mb-1">name</label>
-                    <input type="text" name="name" id="name"
-                        class="w-full border border-gray-300 rounded-md p-2">
+                    <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded-md p-2">
                     <label for="number" class="block font-medium mb-1">number</label>
-                    <input type="number" name="number" id="number"
-                        class="w-full border border-gray-300 rounded-md p-2">
+                    <input type="number" name="number" id="number" class="w-full border border-gray-300 rounded-md p-2">
                     <label for="address" class="block font-medium mb-1">address</label>
-                    <input type="text" name="address" id="address"
-                        class="w-full border border-gray-300 rounded-md p-2">
+                    <input type="text" name="address" id="address" class="w-full border border-gray-300 rounded-md p-2">
                     <label for="dp_total" class="block font-medium mb-1">dp total</label>
                     <input type="text" name="dp_total" id="dp_total"
                         class="w-full border border-gray-300 rounded-md p-2">
