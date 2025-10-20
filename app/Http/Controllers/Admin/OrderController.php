@@ -27,15 +27,40 @@ class OrderController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        // Jika produk sudah ada, tambah quantity
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['qty']++;
+        $qty = (int) $request->input('qty', 1);
+
+        if ($product->unit === 'm2') {
+            $length = (float) $request->input('length', 1);
+            $width = (float) $request->input('width', 1);
+
+            // Buat key unik: id-lengthxwidth
+            $key = $product->id . '-' . $length . 'x' . $width;
+
+            if (isset($cart[$key])) {
+                $cart[$key]['qty'] += $qty;
+            } else {
+                $cart[$key] = [
+                    'name' => $product->name,
+                    'price' => $product->price_unit,
+                    'qty' => $qty,
+                    'unit' => $product->unit,
+                    'length' => $length,
+                    'width' => $width,
+                ];
+            }
         } else {
-            $cart[$product->id] = [
-                'name' => $product->name,
-                'price' => $product->price_unit,
-                'qty' => 1,
-            ];
+            // Kalau pcs atau unit lain, hanya qty saja
+            if (isset($cart[$product->id])) {
+                $cart[$product->id]['qty'] += $qty;
+            } else {
+                $cart[$product->id] = [
+                    'name' => $product->name,
+                    'price' => $product->price_unit,
+                    'unit' => $product->unit,
+
+                    'qty' => $qty,
+                ];
+            }
         }
 
         session()->put('cart', $cart);
@@ -43,10 +68,11 @@ class OrderController extends Controller
         return redirect()->route('order.index')->with('success', 'Produk ditambahkan ke keranjang!');
     }
 
+
     public function incrementCart($id)
     {
         $cart = session('cart', []);
-        if(isset($cart[$id])) {
+        if (isset($cart[$id])) {
             $cart[$id]['qty'] += 1;
             session(['cart' => $cart]);
         }
@@ -57,8 +83,8 @@ class OrderController extends Controller
     public function decrementCart($id)
     {
         $cart = session('cart', []);
-        if(isset($cart[$id])){
-            if($cart[$id]['qty'] > 1) {
+        if (isset($cart[$id])) {
+            if ($cart[$id]['qty'] > 1) {
                 $cart[$id]['qty'] -= 1;
             } else {
                 unset($cart[$id]);
@@ -72,17 +98,13 @@ class OrderController extends Controller
     // Proses checkout
     public function checkout(CheckoutRequest $request)
     {
+        
         $validated = $request->validated();
-        //     $cart = session('cart', []);
+        $cart = session('cart', []);
 
-        //     if (empty($cart)) {
-        //         return redirect()->back()->with('error', 'Keranjang masih kosong.');
-        //     }
-
-        $cart = [
-            3 => ['name' => 'Banner', 'length' => 5, 'width' => 3, 'qty' => 1],
-            1 => ['name' => 'Kartu Nama', 'qty' => 1],
-        ];
+        if (empty($cart)) {
+            return redirect()->back()->with('error', 'Keranjang masih kosong.');
+        }
 
         DB::beginTransaction();
 
@@ -105,13 +127,16 @@ class OrderController extends Controller
 
             $total = 0;
 
-            foreach ($cart as $productId => $item) {
+            foreach ($cart as $key => $item) {
+                // Ambil ID asli produk dari key unik (misalnya "1-2x3" jadi "1")
+                $productId = explode('-', $key)[0];
                 $product = Product::find($productId);
+
                 if (!$product) {
                     throw new \Exception("Produk dengan ID {$productId} tidak ditemukan");
                 }
 
-                // Validasi dimensi jika satuan m2
+                // Validasi dimensi kalau unit m2
                 if ($product->unit === 'm2' && (!isset($item['length']) || !isset($item['width']))) {
                     throw new \Exception("Produk {$product->name} memerlukan panjang dan lebar.");
                 }
@@ -129,14 +154,15 @@ class OrderController extends Controller
                 $total += $subtotal;
 
                 OrderItem::create([
-                    'order_id' => $order->id,
+                    'order_id'   => $order->id,
                     'product_id' => $productId,
-                    'length' => $item['length'] ?? null,
-                    'width' => $item['width'] ?? null,
-                    'qty' => $item['qty'],
-                    'price' => $subtotal,
+                    'length'     => $item['length'] ?? null,
+                    'width'      => $item['width'] ?? null,
+                    'qty'        => $item['qty'],
+                    'price'      => $subtotal,
                 ]);
             }
+
 
             $order->update(['price_total' => $total]);
 
@@ -144,14 +170,7 @@ class OrderController extends Controller
 
             session()->forget('cart');
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Pesanan berhasil dibuat!',
-                'order' => $order,
-                'customer' => $customer,
-                'cart' => $cart,
-                'total_harga' => $total
-            ]);
+            return redirect()->route('history-order.index')->with('success', 'Pesanan berhasil dibuat');
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
