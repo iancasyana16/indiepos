@@ -13,4 +13,4 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 // Route::resource('product', ProductController::class)->only(['index', 'store', 'update', 'destroy']);
 // Route::resource('user', UserController::class)->only('index', 'store', 'update', 'destroy');
 
-Route::post('/order/checkout', [AdminOrderController::class, 'checkout'])->name('order.checkout');
+// Route::post('/order/checkout', [AdminOrderController::class, 'checkout'])->name('order.checkout');
