@@ -29,6 +29,9 @@
                                                     <label for="width" class="block font-medium mb-1">width</label>
                                                     <input type="number" name="width" id="width" min="1" value="1"
                                                         class="w-full border border-gray-300 rounded-md p-2">
+                                                    <label for="qty" class="block font-medium mb-1">qty</label>
+                                                    <input type="number" name="qty" id="qty" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
                                                 @else
                                                     <label for="qty" class="block font-medium mb-1">qty</label>
                                                     <input type="number" name="qty" id="qty" min="1" value="1"
@@ -100,7 +103,11 @@
                                 <div class="Banner">{{ $item['name'] }} x {{ $item['qty'] }}</div>
                             </div>
                             <div class="font-semibold text-xs">
-                                {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
+                                @if ($item['unit'] === 'm2')
+                                    {{ number_format($item['length'] * $item['width'] * $item['price'], 0, ',', '.') }}
+                                @else
+                                    {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
+                                @endif
                             </div>
                         </div>
                     @endforeach
