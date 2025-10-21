@@ -104,7 +104,7 @@
                             </div>
                             <div class="font-semibold text-xs">
                                 @if ($item['unit'] === 'm2')
-                                    {{ number_format($item['length'] * $item['width'] * $item['price'], 0, ',', '.') }}
+                                    {{ number_format($item['length'] * $item['width'] * $item['price'] * $item['qty'], 0, ',', '.') }}
                                 @else
                                     {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
                                 @endif
@@ -115,7 +115,13 @@
                     <div class="flex font-bold text-lg mb-1">
                         <div>Total</div>
                         <div class="ml-auto">Rp.
-                            {{ number_format(collect($cart)->sum(fn($i) => $i['price'] * $i['qty']), 0, ',', '.') }}
+                            {{ number_format(collect($cart)->sum(function ($item) {
+                                if ($item['unit'] === 'm2') {
+                                    return $item['length'] * $item['width'] * $item['price'] * $item['qty'];
+                                } else {
+                                    return $item['price'] * $item['qty'];
+                                }
+                            }), 0, ',', '.') }}
                         </div>
                     </div>
                 </div>
@@ -124,22 +130,28 @@
                     Create Order
                 </x-button>
                 <x-modal id="orderModal" title="Create Order">
-                    <label for="name" class="block font-medium mb-1">name</label>
-                    <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded-md p-2">
-                    <label for="number" class="block font-medium mb-1">number</label>
-                    <input type="number" name="number" id="number" class="w-full border border-gray-300 rounded-md p-2">
-                    <label for="address" class="block font-medium mb-1">address</label>
-                    <input type="text" name="address" id="address" class="w-full border border-gray-300 rounded-md p-2">
-                    <label for="dp_total" class="block font-medium mb-1">dp total</label>
-                    <input type="text" name="dp_total" id="dp_total"
-                        class="w-full border border-gray-300 rounded-md p-2">
-                    <div class="mt-6 flex justify-end space-x-2">
-                        <x-button onclick="closeModal('orderModal')" :variant="'secondary'">Batal</x-button>
-                        <form action="{{ route('order.checkout') }}" method="POST">
-                            @csrf
-                            <x-button type="submit" :variant="'primary'">Confirm</x-button>
-                        </form>
-                    </div>
+                    <form action="{{ route('order.checkout') }}" method="post">
+                        @csrf
+                        @method('POST')
+                        <label for="name" class="block font-medium mb-1">name</label>
+                        <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded-md p-2">
+                        <label for="number" class="block font-medium mb-1">number</label>
+                        <input type="number" name="number" id="number"
+                            class="w-full border border-gray-300 rounded-md p-2">
+                        <label for="address" class="block font-medium mb-1">address</label>
+                        <input type="text" name="address" id="address"
+                            class="w-full border border-gray-300 rounded-md p-2">
+                        <label for="dp_total" class="block font-medium mb-1">dp total</label>
+                        <input type="text" name="dp_total" id="dp_total"
+                            class="w-full border border-gray-300 rounded-md p-2">
+                        <div class="mt-6 flex justify-end space-x-2">
+                            <x-button onclick="closeModal('orderModal')" :variant="'secondary'">Batal</x-button>
+                            <form action="{{ route('order.checkout') }}" method="POST">
+                                @csrf
+                                <x-button type="submit" :variant="'primary'">Confirm</x-button>
+                            </form>
+                        </div>
+                    </form>
                 </x-modal>
             </div>
         </div>
