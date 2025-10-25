@@ -18,11 +18,10 @@ return new class extends Migration
             $table->decimal('price_total', 15, 2)->default(0);
             $table->decimal('dp_total', 15, 2)->default(0);
             $table->enum('status', [
-                'dipesan',
-                'didesain',
+                'diproses',
+                'belum lunas',
                 'selesai',
-                'lunas'
-            ])->default('dipesan');
+            ])->default('diproses');
             $table->timestamps();
         });
     }

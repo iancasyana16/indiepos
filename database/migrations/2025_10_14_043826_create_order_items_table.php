@@ -18,7 +18,13 @@ return new class extends Migration
             $table->decimal('length', 10, 2)->nullable();
             $table->decimal('width', 10, 2)->nullable();
             $table->integer('qty')->default(1);
+            $table->string('description')->nullable();
             $table->decimal('price', 15, 2)->default(0);
+            $table->enum('status', [
+                'menunggu desain',
+                'didesain',
+                'selesai',
+            ])->default('menunggu desain');
             $table->timestamps();
         });
     }
