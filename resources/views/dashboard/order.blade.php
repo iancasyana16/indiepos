@@ -7,49 +7,48 @@
                     class="border bg-white border-gray-400 rounded-md p-2 w-full mb-5">
                 <div class="max-h-110 overflow-hidden bg-slate-600 px-3 rounded-xl hover:overflow-y-auto">
                     @forelse($products as $product)
-                    <div class="bg-white shadow-lg flex justify-between rounded-lg items-center my-3 p-3">
-                        <div class="flex justify-between items-center w-full">
-                            <div class="font-semibold">{{ $product->name }}</div>
-                            <div class="flex space-x-2 items-center">
-                                <div class="font-semibold flex">
-                                    <p>Rp {{ $product->price_unit }}/</p>
-                                    <p>{{ $product->unit }}</p>
+                        <div class="bg-white shadow-lg flex justify-between rounded-lg items-center my-3 p-3">
+                            <div class="flex justify-between items-center w-full">
+                                <div class="font-semibold">{{ $product->name }}</div>
+                                <div class="flex space-x-2 items-center">
+                                    <div class="font-semibold flex">
+                                        <p>Rp {{ $product->price_unit }}/</p>
+                                        <p>{{ $product->unit }}</p>
+                                    </div>
+                                    <x-button :type="'button'" :variant="'primary'" :size="'sm'"
+                                        onclick="openModal('modal-{{ $product->id }}')">+</x-button>
+                                    <x-modal :id="'modal-' . $product->id" :title="'Tambah ' . $product->name">
+                                        <form action="{{ route('order.add', $product->id) }}" method="POST"
+                                            class="space-y-4">
+                                            @csrf
+                                            <div>
+                                                @if ($product->unit === 'm2')
+                                                    <label for="length" class="block font-medium mb-1">length</label>
+                                                    <input type="number" name="length" id="length" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                    <label for="width" class="block font-medium mb-1">width</label>
+                                                    <input type="number" name="width" id="width" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                    <label for="qty" class="block font-medium mb-1">qty</label>
+                                                    <input type="number" name="qty" id="qty" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                @else
+                                                    <label for="qty" class="block font-medium mb-1">qty</label>
+                                                    <input type="number" name="qty" id="qty" min="1" value="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+                                                @endif
+                                            </div>
+                                            <div class="flex justify-end space-x-2">
+                                                <x-button :type="'button'" :variant="'secondary'" :size="'sm'"
+                                                    onclick="closeModal('modal-{{ $product->id }}')">Cancel</x-button>
+                                                <x-button :type="'submit'" :variant="'primary'" :size="'sm'">Add to
+                                                    Cart</x-button>
+                                            </div>
+                                        </form>
+                                    </x-modal>
                                 </div>
-                                <x-button :type="'button'" :variant="'primary'" :size="'sm'"
-                                    onclick="openModal('modal-{{ $product->id }}')">+</x-button>
-                                <x-modal :id="'modal-' . $product->id" :title="'Tambah ' . $product->name">
-                                    <form action="{{ route('order.add', $product->id) }}" method="POST"
-                                        class="space-y-4">
-                                        @csrf
-                                        <div>
-                                            @if ($product->unit === 'm2')
-                                            <label for="length" class="block font-medium mb-1">length</label>
-                                            <input type="number" name="length" id="length" min="1" value="1"
-                                                class="w-full border border-gray-300 rounded-md p-2">
-                                            <label for="width" class="block font-medium mb-1">width</label>
-                                            <input type="number" name="width" id="width" min="1" value="1"
-                                                class="w-full border border-gray-300 rounded-md p-2">
-                                            <label for="qty" class="block font-medium mb-1">qty</label>
-                                            <input type="number" name="qty" id="qty" min="1" value="1"
-                                                class="w-full border border-gray-300 rounded-md p-2">
-
-                                            @else
-                                            <label for="qty" class="block font-medium mb-1">qty</label>
-                                            <input type="number" name="qty" id="qty" min="1" value="1"
-                                                class="w-full border border-gray-300 rounded-md p-2">
-                                            @endif
-                                        </div>
-                                        <div class="flex justify-end space-x-2">
-                                            <x-button :type="'button'" :variant="'secondary'" :size="'sm'"
-                                                onclick="closeModal('modal-{{ $product->id }}')">Cancel</x-button>
-                                            <x-button :type="'submit'" :variant="'primary'" :size="'sm'">Add to
-                                                Cart</x-button>
-                                        </div>
-                                    </form>
-                                </x-modal>
                             </div>
                         </div>
-                    </div>
                     @empty
                     <x-noData>Belum Ada Data Produk</x-noData>
                     @endforelse
@@ -76,58 +75,53 @@
                     @if (empty($cart))
                     <x-noData>Keranjang kosong</x-noData>
                     @else
-                    @foreach($cart as $id => $item)
-                    <div class="px-3 mt-2 bg-white rounded-md space-y">
-                        <div class="flex justify-between items-center">
-                            <div class="font-semibold">{{ $item['name'] }}</div>
-                            <div class="flex items-center space-x-2">
-                                <form action="{{ route('order.cart.decrement', $id) }}" method="POST">
-                                    @csrf
-                                    <x-button type="submit" :variant="'primary'" :size="'sm'">-</x-button>
-                                </form>
-                                <div class="font-semibold">{{ $item['qty'] }}</div>
-                                <form action="{{ route('order.cart.increment', $id) }}" method="POST">
-                                    @csrf
-                                    <x-button type="submit" :variant="'primary'" :size="'sm'">+</x-button>
-                                </form>
+                        @foreach($cart as $id => $item)
+                            <div class="px-3 mt-2 bg-white rounded-md space-y">
+                                <div class="flex justify-between items-center">
+                                    <div class="font-semibold">{{ $item['name'] }}</div>
+                                    <div class="flex items-center space-x-2">
+                                        <form action="{{ route('order.cart.decrement', $id) }}" method="post">
+                                            @csrf
+                                            <x-button type="submit" :variant="'primary'" :size="'sm'">-</x-button>
+                                        </form>
+                                        <div class="font-semibold">{{ $item['qty'] }}</div>
+                                        <form action="{{ route('order.cart.increment', $id) }}" method="post">
+                                            @csrf
+                                            <x-button type="submit" :variant="'primary'" :size="'sm'">+</x-button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    @endforeach
+                        @endforeach
                     @endif
                 </div>
                 <div class="bg-white rounded-md p-3 mt-2">
                     <div class="font-semibold text-xs mb-3">Rincian</div>
                     @foreach ($cart as $id => $item)
-                    <div class="flex justify-between items-center">
-                        <div class="font-semibold text-xs mb-1">
-                            <div class="Banner">{{ $item['name'] }} x {{ $item['qty'] }}</div>
-                            @if(isset($item['length']) && isset($item['width']))
-                            <div>{{ $item['length'] }}m x {{ $item['width'] }}m</div>
-                            @endif
+                        <div class="flex justify-between items-center">
+                            <div class="font-semibold text-xs mb-1">
+                                <div class="Banner">{{ $item['name'] }} x {{ $item['qty'] }}</div>
+                            </div>
+                            <div class="font-semibold text-xs">
+                                @if ($item['unit'] === 'm2')
+                                    {{ number_format($item['length'] * $item['width'] * $item['price'] * $item['qty'], 0, ',', '.') }}
+                                @else
+                                    {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
+                                @endif
+                            </div>
                         </div>
-                        <div class="font-semibold text-xs">
-                            @php
-                            $subtotal = $item['unit'] === 'm2'
-                            ? $item['price'] * $item['qty'] * $item['length'] * $item['width']
-                            : $item['price'] * $item['qty'];
-                            @endphp
-                            {{ number_format($subtotal, 0, ',', '.') }}
-                        </div>
-                    </div>
                     @endforeach
                     <hr class="my-2">
                     <div class="flex font-bold text-lg mb-1">
                         <div>Total</div>
                         <div class="ml-auto">Rp.
-                            {{ number_format(
-                            collect($cart)->sum(function ($i) {
-                            if ($i['unit'] === 'm2') {
-                            return $i['price'] * $i['qty'] * $i['length'] * $i['width'];
-                            }
-                            return $i['price'] * $i['qty'];
-                            }),
-                            0, ',', '.') }}
+                            {{ number_format(collect($cart)->sum(function ($item) {
+                                if ($item['unit'] === 'm2') {
+                                    return $item['length'] * $item['width'] * $item['price'] * $item['qty'];
+                                } else {
+                                    return $item['price'] * $item['qty'];
+                                }
+                            }), 0, ',', '.') }}
                         </div>
                     </div>
                 </div>
@@ -136,8 +130,9 @@
                     Create Order
                 </x-button>
                 <x-modal id="orderModal" title="Create Order">
-                    <form action="{{ route('order.checkout') }}" method="POST">
+                    <form action="{{ route('order.checkout') }}" method="post">
                         @csrf
+                        @method('POST')
                         <label for="name" class="block font-medium mb-1">name</label>
                         <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded-md p-2">
                         <label for="number" class="block font-medium mb-1">number</label>
@@ -147,11 +142,14 @@
                         <input type="text" name="address" id="address"
                             class="w-full border border-gray-300 rounded-md p-2">
                         <label for="dp_total" class="block font-medium mb-1">dp total</label>
-                        <input type="number" name="dp_total" id="dp_total"
+                        <input type="text" name="dp_total" id="dp_total"
                             class="w-full border border-gray-300 rounded-md p-2">
                         <div class="mt-6 flex justify-end space-x-2">
                             <x-button onclick="closeModal('orderModal')" :variant="'secondary'">Batal</x-button>
-                            <x-button type="submit" :variant="'primary'">Confirm</x-button>
+                            <form action="{{ route('order.checkout') }}" method="POST">
+                                @csrf
+                                <x-button type="submit" :variant="'primary'">Confirm</x-button>
+                            </form>
                         </div>
                     </form>
                 </x-modal>

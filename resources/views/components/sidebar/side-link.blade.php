@@ -3,9 +3,10 @@
     'activeMatch' => null, // opsional
 ])
 @php
-    $match = $activeMatch ?? $route . '*';
-    $isActive = request()->routeIs($match);
+$match = $activeMatch ?? $route . '/*';
+$isActive = request()->routeIs($match);
 @endphp
+
 
 <a href="{{ route($route) }}"
     class="my-1 min-w-full rounded block px-4 py-2 transition-colors font-medium

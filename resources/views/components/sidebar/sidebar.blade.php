@@ -16,10 +16,10 @@
             <x-sidebar.side-link :route="'history-order.index'">
                 History Order
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'product.index'">
+            <x-sidebar.side-link :route="'product.index'" :activeMatch="'product.*'">
                 Produk
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'account.index'">
+            <x-sidebar.side-link :route="'account.index'" :activeMatch="'account.*'">
                 Account
             </x-sidebar.side-link>
             <x-sidebar.side-link :route="'setting.index'">
