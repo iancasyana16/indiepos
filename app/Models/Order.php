@@ -11,6 +11,8 @@ class Order extends Model
         'price_total',
         'dp_total',
         'order_date',
+        'remaining_payment',
+        'paid_date',
         'status'
     ];
 
