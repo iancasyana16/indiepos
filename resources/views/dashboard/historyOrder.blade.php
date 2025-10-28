@@ -62,32 +62,39 @@
                                                         Rp{{ number_format($order->price_total, 0, ',', '.') }}
                                                     </span>
                                                 </p>
-                                                {{-- <p class="font-medium text-gray-800">
+                                                <p>
+                                                    <span class="font-semibold">DP:</span>
+                                                    Rp{{ number_format($order->dp_total, 0, ',', '.') }}
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold">Pelunasan Saat Ini:</span>
+                                                    Rp{{ number_format($order->remaining_payment ?? 0, 0, ',', '.') }}
+                                                </p>
+                                                <div class="mt-2 flex items-center gap-3">
                                                     <span class="font-semibold">Status:</span>
-                                                    <span
-                                                        class="px-3 py-1 text-xs font-semibold rounded-full {{ $orderColorClass }}">
+                                                    <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $orderColorClass }}">
                                                         {{ Str::title($order->status) }}
                                                     </span>
-                                                </p> --}}
-                                                <p class="font-medium text-gray-800">
-                                                    <span class="font-semibold">Status:</span>
                                                     @if(Auth::user()->role === 'kasir')
-                                                        <form action="{{ route('order.update', $order->id) }}" method="POST" class="inline-flex items-center gap-1">
+                                                        <form action="{{ route('kasir.order.update', $order->id) }}" method="POST" class="inline-flex items-center gap-2">
                                                             @csrf
                                                             @method('PUT')
-                                                            <select name="status" class="border border-gray-300 rounded px-2 py-1 text-xs">
-                                                                {{-- <option value="diproses" {{ $order->status === 'diproses' ? 'selected' : '' }}>Diproses</option> --}}
-                                                                <option value="belum lunas" {{ $order->status === 'belum lunas' ? 'selected' : '' }}>Belum Lunas</option>
-                                                                <option value="selesai" {{ $order->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
-                                                            </select>
-                                                            <x-button type="submit" :variant="'primary'" :size="'sm'">Ubah</x-button>
+
+                                                            <input 
+                                                                type="number" 
+                                                                name="remaining_payment" 
+                                                                class="border border-gray-300 rounded px-2 py-1 text-xs w-28"
+                                                                placeholder="Input Pelunasan (Rp)" 
+                                                                min="0" required
+                                                            >
+
+                                                            <x-button type="submit" :variant="'primary'" :size="'sm'">
+                                                                Simpan
+                                                            </x-button>
                                                         </form>
-                                                    @else
-                                                        <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $orderColorClass }}">
-                                                            {{ Str::title($order->status) }}
-                                                        </span>
                                                     @endif
-                                                </p>
+                                                </div>
                                             </div>
 
                                             {{-- Detail Item Pesanan --}}
@@ -123,15 +130,9 @@
                                                                         <x-table.td class="px-4 py-2">
                                                                             Rp{{ number_format($item->price, 0, ',', '.') }}
                                                                         </x-table.td>
-                                                                        {{-- <x-table.td class="px-4 py-2">
-                                                                            <span
-                                                                                class="px-2 py-1 rounded-full text-xs font-semibold {{ $itemColorClass }}">
-                                                                                {{ Str::title($item->status) }}
-                                                                            </span>
-                                                                        </x-table.td> --}}
                                                                         <x-table.td class="px-4 py-2">
                                                                             @if(Auth::user()->role === 'desainer')
-                                                                                <form action="{{ route('order.update', $item->id) }}" method="POST" class="flex items-center gap-1">
+                                                                                <form action="{{ route('desainer.order-item.update', $item->id) }}" method="POST" class="flex items-center gap-1">
                                                                                     @csrf
                                                                                     @method('PUT')
                                                                                     <select name="status" class="border border-gray-300 rounded px-2 py-1 text-sm">

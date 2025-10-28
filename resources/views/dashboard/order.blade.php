@@ -1,7 +1,7 @@
 <x-layouts.dashboard>
     <x-navbar title="Order"/>
     <div class="p-4">
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div class="p-2">
                 <input type="search" name="search" id="search" placeholder="Cari..."
                     class="border bg-white border-gray-400 rounded-md p-2 w-full mb-5">

@@ -37,12 +37,14 @@ Route::middleware('auth')->group(function () {
     });
 
     // Route Desainer
-    Route::prefix('desainer')->group(function () {
+    Route::prefix('desainer')->as('desainer.')->group(function () {
         Route::resource('order', DesainerOrderController::class);
+        Route::put('order-item/{orderItem}', [DesainerOrderController::class, 'update'])
+        ->name('order-item.update');
     });
 
     // Route Kasir
-    Route::prefix('kasir')->group(function () {
+    Route::prefix('kasir')->as('kasir.')->group(function () {
         Route::resource('order', KasirOrderController::class);
     });
 });

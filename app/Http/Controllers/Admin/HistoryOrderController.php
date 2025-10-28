@@ -5,13 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class HistoryOrderController extends Controller
 {
     public function index(): View
     {
-        $orders = Order::with('customer')->latest()->get();
+        $user = Auth::user();
+        $query = Order::with('customer')->latest();
+
+        if ($user->role === 'desainer') {
+            $query->where('status', 'diproses');
+        } elseif ($user->role === 'kasir') {
+            $query->where('status', 'belum lunas');
+        }
+
+        $orders = $query->get();
+
         return view('dashboard.historyOrder', compact('orders'));
     }
 
