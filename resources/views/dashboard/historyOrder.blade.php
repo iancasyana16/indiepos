@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <x-navbar title="istory Order"/>
+    <x-navbar title="History Order"/>
     <div class="p-4">
         <div class="flex justify-between items-center">
             <x-search />

@@ -9,21 +9,27 @@
 </head>
 
 <body class="bg-gray-100">
-    <div class="flex min-h-screen">
-        <x-sidebar.sidebar />
-        <div class="flex-1">
+    <div class="flex h-screen overflow-hidden">
+        <x-sidebar.sidebar id="sidebar" />
+
+        <div
+            id="overlay"
+            class="fixed inset-0 bg-slate-500/25 hidden z-40 md:hidden"
+            onclick="toggleSidebar()">
+        </div>
+
+        <div class="flex-1 overflow-y-auto">
             {{ $slot }}
         </div>
     </div>
     <script>
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) modal.classList.remove('hidden');
-            if (modal) modal.classList.add('flex');
-        }
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) modal.classList.add('hidden');
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden', !isHidden);
         }
     </script>
 </body>

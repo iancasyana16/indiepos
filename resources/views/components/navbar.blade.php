@@ -1,7 +1,7 @@
 @props(['title'])
-<div class="bg-white shadow-lg h-15 justify-between flex items-center p-4">
-    <div class="flex gap-4">
-        {{-- <h2 class="font-bold text-gray-800 md:hidden">☰</h2> --}}
+<div class="bg-white shadow-lg flex justify-between items-center p-4 sticky top-0 z-30">
+    <div class="flex items-center gap-4">
+        <button class="md:hidden text-gray-800 text-2xl" onclick="toggleSidebar()">☰</button>
         <h2 class="font-bold text-gray-800">{{$title ?? 'Dashboard'}}</h2>
     </div>
     <div class="flex items-center space-x-4">
