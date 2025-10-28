@@ -1,3 +1,7 @@
+@php
+    $role = Auth::user()->role ?? null;
+@endphp
+
 <aside id="{{ $id ?? '' }}"
     class="flex flex-col justify-between h-screen w-64 bg-slate-600 shadow-md
             fixed inset-y-0 left-0 z-50 transform -translate-x-full transition-transform duration-300
@@ -10,12 +14,20 @@
     <!-- Navigation Section -->
     <div class="flex-1 flex items-center">
         <nav class="w-full flex flex-col px-4 gap-2 overflow-y-auto">
-            <x-sidebar.side-link :route="'dashboard.index'" :activeMatch="'dashboard.*'">Dashboard</x-sidebar.side-link>
-            <x-sidebar.side-link :route="'order.index'" :activeMatch="'order.*'">Order</x-sidebar.side-link>
-            <x-sidebar.side-link :route="'history-order.index'" :activeMatch="'history-order.*'">History Order</x-sidebar.side-link>
-            <x-sidebar.side-link :route="'product.index'" :activeMatch="'product.*'">Produk</x-sidebar.side-link>
-            <x-sidebar.side-link :route="'account.index'" :activeMatch="'account.*'">Account</x-sidebar.side-link>
-            <x-sidebar.side-link :route="'setting.index'" :activeMatch="'setting.*'">Setting</x-sidebar.side-link>
+                <x-sidebar.side-link :route="'dashboard.index'" :activeMatch="'dashboard.*'">Dashboard</x-sidebar.side-link>
+
+            @if ($role === 'admin')
+                <x-sidebar.side-link :route="'order.index'" :activeMatch="'order.*'">Order</x-sidebar.side-link>
+            @endif
+
+                <x-sidebar.side-link :route="'history-order.index'" :activeMatch="'history-order.*'">History Order</x-sidebar.side-link>
+
+            @if ($role === 'admin')
+                <x-sidebar.side-link :route="'product.index'" :activeMatch="'product.*'">Produk</x-sidebar.side-link>
+                <x-sidebar.side-link :route="'account.index'" :activeMatch="'account.*'">Account</x-sidebar.side-link>
+            @endif
+
+                <x-sidebar.side-link :route="'setting.index'" :activeMatch="'setting.*'">Setting</x-sidebar.side-link>
         </nav>
     </div>
 

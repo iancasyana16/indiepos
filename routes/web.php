@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Desainer\OrderController as DesainerOrderController;
+use App\Http\Controllers\Kasir\OrderController as KasirOrderController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +34,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/order/cart/increment/{id}', [AdminOrderController::class, 'incrementCart'])->name('order.cart.increment');
         Route::post('/order/cart/decrement/{id}', [AdminOrderController::class, 'decrementCart'])->name('order.cart.decrement');
         Route::post('/order/checkout', [AdminOrderController::class, 'checkout'])->name('order.checkout');
+    });
+
+    // Route Desainer
+    Route::prefix('desainer')->group(function () {
+        Route::resource('order', DesainerOrderController::class);
+    });
+
+    // Route Kasir
+    Route::prefix('kasir')->group(function () {
+        Route::resource('order', KasirOrderController::class);
     });
 });

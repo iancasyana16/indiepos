@@ -67,7 +67,7 @@ class UserController extends Controller
     {
         $newPassword = 'password123';
         $account->update([
-            'password' => [Hash::make($newPassword)],
+            'password' => Hash::make($newPassword),
         ]);
         return redirect()->route('account.index')->with('success', 'Password user berhasil direset!');
     }

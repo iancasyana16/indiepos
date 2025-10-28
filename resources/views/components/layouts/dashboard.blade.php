@@ -31,6 +31,15 @@
             sidebar.classList.toggle('-translate-x-full');
             overlay.classList.toggle('hidden', !isHidden);
         }
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('hidden');
+            if (modal) modal.classList.add('flex');
+        }
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add('hidden');
+        }
     </script>
 </body>
 

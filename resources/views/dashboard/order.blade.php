@@ -3,8 +3,9 @@
     <div class="p-4">
         <div class="grid grid-cols-2 gap-2">
             <div class="p-2">
-                <input type="search" name="search" id="search" placeholder="Search..."
+                <input type="search" name="search" id="search" placeholder="Cari..."
                     class="border bg-white border-gray-400 rounded-md p-2 w-full mb-5">
+
                 <div class="max-h-110 overflow-hidden bg-slate-600 px-3 rounded-xl hover:overflow-y-auto">
                     @forelse($products as $product)
                         <div class="bg-white shadow-lg flex justify-between rounded-lg items-center my-3 p-3">
@@ -15,34 +16,44 @@
                                         <p>Rp {{ $product->price_unit }}/</p>
                                         <p>{{ $product->unit }}</p>
                                     </div>
+
                                     <x-button :type="'button'" :variant="'primary'" :size="'sm'"
                                         onclick="openModal('modal-{{ $product->id }}')">+</x-button>
+
                                     <x-modal :id="'modal-' . $product->id" :title="'Tambah ' . $product->name">
                                         <form action="{{ route('order.add', $product->id) }}" method="POST"
                                             class="space-y-4">
                                             @csrf
                                             <div>
-                                                @if ($product->unit === 'm2')
-                                                    <label for="length" class="block font-medium mb-1">length</label>
-                                                    <input type="number" name="length" id="length" min="1" value="1"
+                                                @if ($product->unit !== 'pcs')
+                                                    <label for="length" class="block font-medium mb-1">Panjang (cm)</label>
+                                                    <input type="number" name="length" id="length"
                                                         class="w-full border border-gray-300 rounded-md p-2">
-                                                    <label for="width" class="block font-medium mb-1">width</label>
-                                                    <input type="number" name="width" id="width" min="1" value="1"
+
+                                                    <label for="width" class="block font-medium mb-1">Lebar (cm)</label>
+                                                    <input type="number" name="width" id="width"
                                                         class="w-full border border-gray-300 rounded-md p-2">
-                                                    <label for="qty" class="block font-medium mb-1">qty</label>
-                                                    <input type="number" name="qty" id="qty" min="1" value="1"
+
+                                                    <label for="qty" class="block font-medium mb-1">Jumlah</label>
+                                                    <input type="number" name="qty" id="qty" min="1"
+                                                        class="w-full border border-gray-300 rounded-md p-2">
+
+                                                    <label for="description" class="block font-medium mb-1">Deskripsi</label>
+                                                    <input type="text" name="description" id="description"
                                                         class="w-full border border-gray-300 rounded-md p-2">
                                                 @else
-                                                    <label for="qty" class="block font-medium mb-1">qty</label>
-                                                    <input type="number" name="qty" id="qty" min="1" value="1"
+                                                    <label for="qty" class="block font-medium mb-1">Jumlah</label>
+                                                    <input type="number" name="qty" id="qty" min="1"
                                                         class="w-full border border-gray-300 rounded-md p-2">
                                                 @endif
                                             </div>
+
                                             <div class="flex justify-end space-x-2">
                                                 <x-button :type="'button'" :variant="'secondary'" :size="'sm'"
-                                                    onclick="closeModal('modal-{{ $product->id }}')">Cancel</x-button>
-                                                <x-button :type="'submit'" :variant="'primary'" :size="'sm'">Add to
-                                                    Cart</x-button>
+                                                    onclick="closeModal('modal-{{ $product->id }}')">Batal</x-button>
+                                                <x-button :type="'submit'" :variant="'primary'" :size="'sm'">
+                                                    Tambah ke Keranjang
+                                                </x-button>
                                             </div>
                                         </form>
                                     </x-modal>
@@ -54,9 +65,10 @@
                     @endforelse
                 </div>
             </div>
+
             <div class="bg-slate-600 shadow-lg rounded-lg p-5">
                 <div class="bg-white rounded-md p-2">
-                    <div class="font-semibold">New Order</div>
+                    <div class="font-semibold">Pesanan Baru</div>
                     <div class="flex justify-between items-center">
                         <div class="font-semibold">Admin</div>
                         <form action="{{ route('order.cart.clear') }}" method="post">
@@ -68,11 +80,13 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="space-y-2">
                     @php
                         $cart = session('cart', []);
                         $total = 0;
                     @endphp
+
                     @if (empty($cart))
                         <x-noData>Keranjang kosong</x-noData>
                     @else
@@ -112,6 +126,7 @@
                         @endforeach
                     @endif
                 </div>
+
                 <div class="bg-white rounded-md p-3 mt-2">
                     <div class="font-semibold text-xs mb-3">Rincian</div>
                     @foreach ($cart as $id => $item)
@@ -126,7 +141,7 @@
                             </div>
                             <div class="font-semibold text-xs">
                                 @if ($item['unit'] === 'm2')
-                                    {{ number_format($item['length'] * $item['width'] * $item['price'] * $item['qty'], 0, ',', '.') }}
+                                    {{ number_format(($item['length'] * $item['width'] / 10000) * $item['price'] * $item['qty'], 0, ',', '.') }}
                                 @else
                                     {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
                                 @endif
@@ -136,30 +151,49 @@
                     <hr class="my-2">
                     <div class="flex font-bold text-lg mb-1">
                         <div>Total</div>
-                        <div class="ml-auto">Rp.{{ number_format($total, 0, ',', '.') }}
-                            {{-- {{ number_format(collect($cart)->sum(fn($i) => $i['price'] * $i['qty']), 0, ',', '.') }} --}}
+                        <div class="ml-auto">Rp.
+                            {{ number_format(collect($cart)->sum(function ($item) {
+                                if ($item['unit'] === 'm2') {
+                                    return ($item['length'] * $item['width'] / 10000) * $item['price'] * $item['qty'];
+                                } else {
+                                    return $item['price'] * $item['qty'];
+                                }
+                            }), 0, ',', '.') }}
                         </div>
                     </div>
                 </div>
+
                 <x-button :type="'button'" :variant="'primary'" :size="'md'" class="w-full"
                     onclick="openModal('orderModal')">
-                    Create Order
+                    Buat Pesanan
                 </x-button>
-                <x-modal id="orderModal" title="Create Order">
-                    <form action="{{ route('order.checkout') }}" method="POST">
+
+                <x-modal id="orderModal" title="Buat Pesanan">
+                    <form action="{{ route('order.checkout') }}" method="post">
                         @csrf
-                        <label for="name" class="block font-medium mb-1">name</label>
+                        @method('POST')
+
+                        <label for="name" class="block font-medium mb-1">Nama</label>
                         <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded-md p-2">
-                        <label for="number" class="block font-medium mb-1">number</label>
-                        <input type="number" name="number" id="number" class="w-full border border-gray-300 rounded-md p-2">
-                        <label for="address" class="block font-medium mb-1">address</label>
-                        <input type="text" name="address" id="address" class="w-full border border-gray-300 rounded-md p-2">
-                        <label for="dp_total" class="block font-medium mb-1">dp total</label>
+
+                        <label for="number" class="block font-medium mb-1">Nomor Telepon</label>
+                        <input type="number" name="number" id="number"
+                            class="w-full border border-gray-300 rounded-md p-2">
+
+                        <label for="address" class="block font-medium mb-1">Alamat</label>
+                        <input type="text" name="address" id="address"
+                            class="w-full border border-gray-300 rounded-md p-2">
+
+                        <label for="dp_total" class="block font-medium mb-1">Total Uang Muka (DP)</label>
                         <input type="text" name="dp_total" id="dp_total"
                             class="w-full border border-gray-300 rounded-md p-2">
+
                         <div class="mt-6 flex justify-end space-x-2">
                             <x-button onclick="closeModal('orderModal')" :variant="'secondary'">Batal</x-button>
-                            <x-button type="submit" :variant="'primary'">Confirm</x-button>
+                            <form action="{{ route('order.checkout') }}" method="POST">
+                                @csrf
+                                <x-button type="submit" :variant="'primary'">Konfirmasi</x-button>
+                            </form>
                         </div>
                     </form>
                 </x-modal>

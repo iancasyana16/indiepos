@@ -14,7 +14,7 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <x-label for="unit" class="font-semibold">Unit</x-label>
-                            <x-select id="unit" :name="'unit'" :options="['pcs' => 'pcs', 'm2' => 'm2']" />
+                            <x-select id="unit" :name="'unit'" :options="['pcs' => 'pcs', 'm2' => 'm2',  'cm2' => 'cm2']" />
                             @error('unit')
                                 <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                             @enderror
