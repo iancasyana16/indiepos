@@ -37,4 +37,3 @@ Route::prefix('admin')->group(function () {
 Route::prefix('desainer')->group(function () {
     Route::resource('order', DesainerOrderController::class);
 });
-

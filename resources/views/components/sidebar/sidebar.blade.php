@@ -7,14 +7,17 @@
     <!-- Navigation Section -->
     <nav class="p-4">
         <div class="flex flex-col items-start justify-center h-full">
-            <x-sidebar.side-link :route="'dashboard.index'">
+            <x-sidebar.side-link :route="'dashboard.index'" :activeMatch="'dashboard.*'">
                 Dashboard
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'order.index'">
+            <x-sidebar.side-link :route="'order.index'" :activeMatch="'order.*'">
                 Order
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'history-order.index'">
+            <x-sidebar.side-link :route="'history-order.index'" :activeMatch="'history-order.*'">
                 History Order
+            </x-sidebar.side-link>
+            <x-sidebar.side-link :route="'desainer'" :activeMatch="'desainer.*'">
+                Desain
             </x-sidebar.side-link>
             <x-sidebar.side-link :route="'product.index'" :activeMatch="'product.*'">
                 Produk
@@ -22,7 +25,7 @@
             <x-sidebar.side-link :route="'account.index'" :activeMatch="'account.*'">
                 Account
             </x-sidebar.side-link>
-            <x-sidebar.side-link :route="'setting.index'">
+            <x-sidebar.side-link :route="'setting.index'" :activeMatch="'setting.*'">
                 Setting
             </x-sidebar.side-link>
         </div>
