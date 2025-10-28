@@ -12,9 +12,14 @@ class OrderController extends Controller
 {
     public function index(): View
     {
-        $orders = Order::with('customer')->latest()->get();
+        $orders = Order::with('customer')
+            ->where('status', 'diproses')
+            ->latest()
+            ->get();
+
         return view('dashboard.historyOrder', compact('orders'));
     }
+
 
 
     public function show(Order $order)

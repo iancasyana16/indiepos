@@ -17,6 +17,8 @@ return new class extends Migration
             $table->date('order_date')->default(now());
             $table->decimal('price_total', 15, 2)->default(0);
             $table->decimal('dp_total', 15, 2)->default(0);
+            $table->decimal('remaining_payment', 15, 2)->default(0);
+            $table->date('paid_date')->nullable();
             $table->enum('status', [
                 'diproses',
                 'belum lunas',
