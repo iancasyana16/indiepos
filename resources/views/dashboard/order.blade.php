@@ -3,10 +3,12 @@
     <div class="p-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div class="p-2">
-                <input type="search" name="search" id="search" placeholder="Cari..."
-                    class="border bg-white border-gray-400 rounded-md p-2 w-full mb-5">
+            <x-search />
 
-                <div class="max-h-110 overflow-hidden bg-slate-600 px-3 rounded-xl hover:overflow-y-auto">
+                <!-- <input type="search" name="search" id="search" placeholder="Cari..."
+                    class="border bg-white border-gray-400 rounded-md p-2 w-full mb-5"> -->
+
+                <div class="max-h-110 overflow-hidden bg-slate-600 px-3 rounded-xl hover:overflow-y-auto mt-4">
                     @forelse($products as $product)
                         <div class="bg-white shadow-lg flex justify-between rounded-lg items-center my-3 p-3">
                             <div class="flex justify-between items-center w-full">
@@ -92,7 +94,7 @@
                     @else
                         @foreach($cart as $id => $item)
                             @php
-                                if ($item['unit'] === 'm2') {
+                                if ($item['unit'] !== 'pcs') {
                                     $subtotal = $item['length'] * $item['width'] * $item['price'] * $item['qty'];
                                 } else {
                                     $subtotal = $item['price'] * $item['qty'];
@@ -104,9 +106,9 @@
                             <div class="px-3 mt-2 bg-white rounded-md space-y">
                                 <div class="flex justify-between items-center">
                                     <div class="font-semibold">{{ $item['name'] }}
-                                    @if($item['unit'] === 'm2')
+                                    @if($item['unit'] !== 'pcs')
                                         <div class="text-[12px]">
-                                            ({{ $item['length'] }}m x {{ $item['width'] }}m)
+                                            ({{ $item['length'] }}cm x {{ $item['width'] }}cm)
                                         </div>
                                     @endif
                                     </div>
@@ -133,15 +135,17 @@
                         <div class="flex justify-between items-center">
                             <div class="font-semibold text-xs mb-1">
                                 <div class="Banner">{{ $item['name'] }} x {{ $item['qty'] }}</div>
-                                @if($item['unit'] === 'm2')
+                                @if($item['unit'] !== 'pcs')
                                     <div class="text-[10px] text-gray-600">
-                                        ({{ $item['length'] }}m x {{ $item['width'] }}m)
+                                        ({{ $item['length'] }}cm x {{ $item['width'] }}cm)
                                     </div>
                                 @endif
                             </div>
                             <div class="font-semibold text-xs">
                                 @if ($item['unit'] === 'm2')
                                     {{ number_format(($item['length'] * $item['width'] / 10000) * $item['price'] * $item['qty'], 0, ',', '.') }}
+                                @elseif ($item['unit'] === 'cm2')
+                                    {{ number_format($item['length'] * $item['width'] * $item['price'] * $item['qty'], 0, ',', '.') }}
                                 @else
                                     {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}
                                 @endif
@@ -155,6 +159,8 @@
                             {{ number_format(collect($cart)->sum(function ($item) {
                                 if ($item['unit'] === 'm2') {
                                     return ($item['length'] * $item['width'] / 10000) * $item['price'] * $item['qty'];
+                                } if ($item['unit'] === 'cm2') {
+                                    return $item['length'] * $item['width'] * $item['price'] * $item['qty'];
                                 } else {
                                     return $item['price'] * $item['qty'];
                                 }

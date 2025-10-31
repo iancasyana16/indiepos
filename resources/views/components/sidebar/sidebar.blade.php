@@ -7,8 +7,12 @@
             fixed inset-y-0 left-0 z-50 transform -translate-x-full transition-transform duration-300
             md:translate-x-0 md:static md:flex">
     <!-- Logo Section -->
-    <div class="p-4">
-        <h1 class="text-2xl font-bold text-white text-center">Setia Budi</h1>
+    <div class="p-4 flex items-center justify-center">
+        <img 
+            src="{{ asset('SETIA BUDI.png') }}" 
+            alt="Setia Budi Logo" 
+            class="h-12 object-contain"
+        >
     </div>
 
     <!-- Navigation Section -->

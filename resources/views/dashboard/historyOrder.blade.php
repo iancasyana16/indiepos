@@ -3,15 +3,29 @@
     <x-toast />
 
     <div class="p-4">
-        <div class="flex justify-between items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-2">
             <x-search />
-            <x-button :variant="'secondary'">Terbaru</x-button>
+            <div class="flex justify-end items-center gap-2">
+                @php
+                    $options = ['terbaru' => 'Terbaru', 'terlama' => 'Terlama'];
+
+                    if (Auth::user()->role === 'admin') {
+                        $options = array_merge($options, [
+                            'diproses' => 'Diproses',
+                            'belum_lunas' => 'Belum Lunas',
+                            'selesai' => 'Selesai',
+                        ]);
+                    }
+                @endphp
+
+                <x-filter :options="$options"/>
+            </div>
         </div>
 
         <div class="mt-4">
             <x-table.table>
                 <x-slot:head>
-                    <x-table.th>ID</x-table.th>
+                    <x-table.th>#</x-table.th>
                     <x-table.th>Nama</x-table.th>
                     <x-table.th>Total</x-table.th>
                     <x-table.th>Tanggal</x-table.th>
@@ -33,7 +47,7 @@
                         <x-table.tr>
                             <x-table.td>{{ $index + 1 }}</x-table.td>
                             <x-table.td>{{ $order->customer['name'] }}</x-table.td>
-                            <x-table.td>{{ 'Rp.' . number_format($order->price_total, 0, ',', '.') }}</x-table.td>
+                            <x-table.td>{{ 'Rp' . number_format($order->price_total, 0, ',', '.') }}</x-table.td>
                             <x-table.td>{{ $order->order_date }}</x-table.td>
                             <x-table.td>
                                 <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $orderColorClass }}">
@@ -53,44 +67,40 @@
                                             {{-- Info Utama --}}
                                             <div
                                                 class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex flex-wrap items-center justify-between gap-4">
-                                                <p class="font-medium text-gray-800">
-                                                    <span class="font-semibold">Nama:</span> {{ $order->customer['name'] }}
-                                                </p>
-                                                <p class="font-medium text-gray-800">
-                                                    <span class="font-semibold">Total:</span>
-                                                    <span class="text-green-600 font-semibold">
-                                                        Rp{{ number_format($order->price_total, 0, ',', '.') }}
-                                                    </span>
-                                                </p>
-                                                <p>
-                                                    <span class="font-semibold">DP:</span>
-                                                    Rp{{ number_format($order->dp_total, 0, ',', '.') }}
-                                                </p>
+                                                <div>
+                                                    <p class="font-medium text-gray-800">
+                                                        <span class="font-semibold">Nama:</span> {{ $order->customer['name'] }}
+                                                    </p>
+                                                    <p class="font-medium text-gray-800">
+                                                        <span class="font-semibold">Total:</span>
+                                                        <span class="text-green-600 font-semibold">
+                                                            Rp{{ number_format($order->price_total, 0, ',', '.') }}
+                                                        </span>
+                                                    </p>
+                                                    <p>
+                                                        <span class="font-semibold">DP:</span>
+                                                        Rp{{ number_format($order->dp_total, 0, ',', '.') }}
+                                                    </p>
+                                                </div>
 
-                                                <p>
+                                                <!-- <p>
                                                     <span class="font-semibold">Pelunasan Saat Ini:</span>
                                                     Rp{{ number_format($order->remaining_payment ?? 0, 0, ',', '.') }}
-                                                </p>
-                                                <div class="mt-2 flex items-center gap-3">
-                                                    <span class="font-semibold">Status:</span>
-                                                    <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $orderColorClass }}">
-                                                        {{ Str::title($order->status) }}
-                                                    </span>
+                                                </p> -->
+                                                <div class="mt-2 flex flex-col items-center gap-3">
+                                                    <div>
+                                                        <span class="font-semibold">Status:</span>
+                                                        <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $orderColorClass }}">
+                                                            {{ Str::title($order->status) }}
+                                                        </span>
+                                                    </div>
                                                     @if(Auth::user()->role === 'kasir')
                                                         <form action="{{ route('kasir.order.update', $order->id) }}" method="POST" class="inline-flex items-center gap-2">
                                                             @csrf
                                                             @method('PUT')
-
-                                                            <input 
-                                                                type="number" 
-                                                                name="remaining_payment" 
-                                                                class="border border-gray-300 rounded px-2 py-1 text-xs w-28"
-                                                                placeholder="Input Pelunasan (Rp)" 
-                                                                min="0" required
-                                                            >
-
+                                                            <input type="hidden" name="remaining_payment" value="{{ $order->price_total - $order->dp_total }}">
                                                             <x-button type="submit" :variant="'primary'" :size="'sm'">
-                                                                Simpan
+                                                                Selesaikan Order
                                                             </x-button>
                                                         </form>
                                                     @endif
@@ -132,16 +142,28 @@
                                                                         </x-table.td>
                                                                         <x-table.td class="px-4 py-2">
                                                                             @if(Auth::user()->role === 'desainer')
-                                                                                <form action="{{ route('desainer.order-item.update', $item->id) }}" method="POST" class="flex items-center gap-1">
-                                                                                    @csrf
-                                                                                    @method('PUT')
-                                                                                    <select name="status" class="border border-gray-300 rounded px-2 py-1 text-sm">
-                                                                                        <option value="menunggu desain" {{ $item->status === 'menunggu desain' ? 'selected' : '' }}>Menunggu Desain</option>
-                                                                                        <option value="didesain" {{ $item->status === 'didesain' ? 'selected' : '' }}>Didesain</option>
-                                                                                        <option value="selesai" {{ $item->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
-                                                                                    </select>
-                                                                                    <x-button type="submit" :variant="'primary'" :size="'sm'">Ubah</x-button>
-                                                                                </form>
+                                                                                @if($item->status !== 'selesai')    
+                                                                                    <form action="{{ route('desainer.order-item.update', $item->id) }}" method="POST" class="flex items-center gap-1">
+                                                                                        @csrf
+                                                                                        @method('PUT')
+                                                                                        <select name="status" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                                                                                            @if($item->status === 'menunggu desain') 
+                                                                                                <option value="menunggu desain" {{ $item->status === 'menunggu desain' ? 'selected' : '' }}>Menunggu Desain</option>
+                                                                                                <option value="didesain" {{ $item->status === 'didesain' ? 'selected' : '' }}>Didesain</option>
+                                                                                                <option value="selesai" {{ $item->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                                                                            @elseif($item->status === 'didesain') 
+                                                                                                <option value="didesain" {{ $item->status === 'didesain' ? 'selected' : '' }}>Didesain</option>
+                                                                                                <option value="selesai" {{ $item->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                                                                            @endif
+                                                                                        </select>
+                                                                                        <x-button type="submit" :variant="'primary'" :size="'sm'">Ubah</x-button>
+                                                                                    </form>
+                                                                                @else
+                                                                                    {{-- Jika status sudah selesai, tampilkan teks saja --}}
+                                                                                    <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $itemColorClass }}">
+                                                                                        {{ Str::title($item->status) }}
+                                                                                    </span>
+                                                                                @endif
                                                                             @else
                                                                                 <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $itemColorClass }}">
                                                                                     {{ Str::title($item->status) }}

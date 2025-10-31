@@ -8,12 +8,29 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = Product::paginate(5);
+        $query = Product::query();
+
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('unit', 'like', "%{$search}%");
+        }
+
+        $filter = $request->input('sort', 'terbaru');
+
+        if ($filter === 'terlama') {
+            $query->oldest();
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(5)->appends($request->only('search', 'filter'));
+
         return view('dashboard.product', compact('products'));
     }
 

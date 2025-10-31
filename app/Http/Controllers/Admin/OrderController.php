@@ -14,9 +14,18 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     // Tampilkan daftar produk (halaman order)
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $search = $request->input('search');
+
+        // Ambil produk, bisa difilter berdasarkan nama
+        $query = Product::query();
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $products = $query->get();
         $cart = session('cart', []);
 
         return view('dashboard.order', compact('products', 'cart'));
@@ -30,7 +39,7 @@ class OrderController extends Controller
         $qty = (int) $request->input('qty', 1);
         $description = (string) $request->input('description');
 
-        if ($product->unit === 'm2') {
+        if ($product->unit !== 'pcs') {
             $length = (float) $request->input('length', 1);
             $width = (float) $request->input('width', 1);
 
@@ -131,6 +140,8 @@ class OrderController extends Controller
             $total = 0;
 
             foreach ($cart as $key => $item) {
+                $length_m = null;
+                $width_m = null;
                 // Ambil ID asli produk dari key unik di session
                 $productId = explode('-', $key)[0];
 
@@ -138,16 +149,21 @@ class OrderController extends Controller
                 $product = Product::findOrFail($productId);
 
                 // Validasi untuk produk dengan satuan m2
-                if ($product->unit === 'm2' && (!isset($item['length']) || !isset($item['width']))) {
+                if ($product->unit !== 'pcs' && (!isset($item['length']) || !isset($item['width']))) {
                     throw new \Exception("Produk {$product->name} memerlukan panjang dan lebar.");
                 }
 
                 // Konversi cm → meter (hanya jika produk per m2)
-                $length_m = isset($item['length']) ? $item['length'] / 100 : null;
-                $width_m  = isset($item['width']) ? $item['width'] / 100 : null;
-
-                // Hitung subtotal
                 if ($product->unit === 'm2') {
+                    $length_m = isset($item['length']) ? $item['length'] / 100 : null;
+                    $width_m  = isset($item['width']) ? $item['width'] / 100 : null;
+                } elseif ($product->unit === 'cm2') {
+                    $length_m = isset($item['length']) ? $item['length'] : null;
+                    $width_m  = isset($item['width']) ? $item['width'] : null;
+                }
+                
+                // Hitung subtotal
+                if ($product->unit !== 'pcs') {
                     $subtotal = $length_m * $width_m * $product->price_unit * $item['qty'];
                 } else {
                     $subtotal = $product->price_unit * $item['qty'];

@@ -2,26 +2,26 @@
     <x-navbar />
     <x-toast />
     <div class="p-4">
-        <div class="flex justify-between items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-center">
             <x-search />
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center justify-end gap-2">
                 <x-button as="link" :variant="'outline'" href="{{ route('product.create') }}">+ Tambah</x-button>
-                <x-button :variant="'secondary'">Terbaru</x-button>
+                <x-filter :options="['terbaru' => 'Terbaru', 'terlama' => 'Terlama']" />
             </div>
         </div>
         <div class="mt-4">
             <x-table.table>
                 <x-slot:head>
-                    <x-table.th>ID</x-table.th>
+                    <x-table.th>#</x-table.th>
                     <x-table.th>Nama</x-table.th>
                     <x-table.th>Unit</x-table.th>
                     <x-table.th>Harga</x-table.th>
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
-                    @foreach($products as $product)
+                    @foreach($products as $index => $product)
                         <x-table.tr>
-                            <x-table.td>{{ $product->id }}</x-table.td>
+                            <x-table.td>{{ $index + 1 }}</x-table.td>
                             <x-table.td>{{ $product->name }}</x-table.td>
                             <x-table.td>{{ $product->unit }}</x-table.td>
                             <x-table.td>Rp {{ number_format($product->price_unit, 0, ',', '.') }}</x-table.td>

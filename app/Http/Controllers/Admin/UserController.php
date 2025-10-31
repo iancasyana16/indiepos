@@ -9,12 +9,35 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = User::all();
+        $query = User::query();
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($filter = $request->input('sort')) {
+            if (in_array($filter, ['admin', 'kasir', 'desainer'])) {
+                $query->where('role', $filter);
+            } elseif ($filter === 'terbaru') {
+                $query->latest();
+            } elseif ($filter === 'terlama') {
+                $query->oldest();
+            }
+        } else {
+            $query->latest();
+        }
+
+        $users = $query->paginate(10);
+
         return view('dashboard.account', compact('users'));
     }
 

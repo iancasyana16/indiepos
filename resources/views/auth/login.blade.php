@@ -3,7 +3,14 @@
         <div class="bg-white rounded-md w-full max-w-sm p-6 mx-auto shadow-lg">
             <form action="{{ route('login.post') }}" method="POST">
                 @csrf
-                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+                <div class="grid items-center justify-center gap-2">
+                    <img 
+                        src="{{ asset('SETIA BUDI.png') }}" 
+                        alt="Setia Budi Logo" 
+                        class="h-12 object-contain"
+                        >   
+                    <h2 class="text-xl font-bold text-center text-gray-800 mb-6">Login</h2>
+                </div>
                 @error('email')
                     <div class="text-red-600 text-sm mb-2 text-center">{{ $message }}</div>
                 @enderror

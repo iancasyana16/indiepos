@@ -2,16 +2,23 @@
     <x-navbar />
     <x-toast />
     <div class="p-4">
-        <div class="flex justify-between items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-center">
             <x-search />
-            <div class="flex items-center space-x-4">
+            <div class="flex justify-end items-center gap-2">
                 <x-button :as="'link'" :variant="'outline'" href="{{ route('account.create') }}">+ Tambah</x-button>
+                <x-filter :options="[
+                    'terbaru' => 'Terbaru',
+                    'terlama' => 'Terlama',
+                    'admin' => 'Admin',
+                    'kasir' => 'Kasir',
+                    'desainer' => 'Desainer'
+                ]" />
             </div>
         </div>
         <div class="mt-4">
             <x-table.table>
                 <x-slot:head>
-                    <x-table.th>ID</x-table.th>
+                    <x-table.th>#</x-table.th>
                     <x-table.th>Role</x-table.th>
                     <x-table.th>Email</x-table.th>
                     <x-table.th>Nomor</x-table.th>
@@ -19,9 +26,9 @@
                     <x-table.th>Aksi</x-table.th>
                 </x-slot:head>
                 <x-slot:body>
-                    @foreach($users as $user)
+                    @foreach($users as $index => $user)
                         <x-table.tr>
-                            <x-table.td>{{ $user->id }}</x-table.td>
+                            <x-table.td>{{ $index + 1 }}</x-table.td>
                             <x-table.td>{{ $user->role }}</x-table.td>
                             <x-table.td>{{ $user->email }}</x-table.td>
                             <x-table.td>{{ $user->number }}</x-table.td>
