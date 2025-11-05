@@ -1,8 +1,8 @@
 <x-layouts.dashboard>
-    <x-navbar />
+    <x-navbar title="Pengaturan"/>
     <div class="p-4">
         <div class="bg-white p-4 rounded-lg shadow-lg">
-            <div class="text-lg font-semibold mb-4">Edit Profile</div>
+            <div class="text-lg font-semibold mb-4">Edit Profil</div>
 
             <form action="{{ route('setting.update') }}" method="POST">
                 @csrf
@@ -31,7 +31,7 @@
                     </div>
 
                     <div>
-                        <x-label for="password" class="font-semibold">Password (opsional)</x-label>
+                        <x-label for="password" class="font-semibold">Kata Sandi (opsional)</x-label>
                         <x-input id="password" type="password" name="password" placeholder="Kosongkan jika tidak diganti" />
                     </div>
                 </div>

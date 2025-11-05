@@ -31,8 +31,8 @@
                         </div>
                     </div>
                     <div class="flex justify-end space-x-2">
-                        <x-button :variant="'danger'" onclick="openModal('deleteModal')">Delete</x-button>
-                        <x-button :type="'submit'" :variant="'primary'">Save</x-button>
+                        <x-button :variant="'danger'" onclick="openModal('deleteModal')">Hapus</x-button>
+                        <x-button :type="'submit'" :variant="'primary'">Simpan</x-button>
                     </div>
                 </form>
             </div>

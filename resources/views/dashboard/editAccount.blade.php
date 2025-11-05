@@ -35,12 +35,12 @@
                         </div>
                         <div class="mt-1">
                             <x-button :type="'button'" :variant="'secondary'"
-                                onclick="openModal('resetPasswordModal')">Reset Password</x-button>
+                                onclick="openModal('resetPasswordModal')">Reset Kata Sandi</x-button>
                         </div>
                         <div class="flex justify-end space-x-2">
                             <x-button type="button" onclick="openModal('deleteModal')" :variant="'danger'"
-                                :size="'sm'">Delete</x-button>
-                            <x-button :type="'submit'" :variant="'primary'">Save</x-button>
+                                :size="'sm'">Hapus</x-button>
+                            <x-button :type="'submit'" :variant="'primary'">Simpan</x-button>
                         </div>
                 </form>
             </div>
@@ -62,7 +62,7 @@
             <x-button onclick="closeModal('resetPasswordModal')" :variant="'secondary'">Batal</x-button>
             <form action="{{ route('account.reset-password', $account->id) }}" method="POST">
                 @csrf
-                <x-slot name="title">Reset Password</x-slot>
+                <x-slot name="title">Reset Kata Sandi</x-slot>
                 <x-button type="submit" :variant="'danger'">Reset</x-button>
             </form>
         </div>

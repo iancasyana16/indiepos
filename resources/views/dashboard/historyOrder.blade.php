@@ -1,5 +1,5 @@
 <x-layouts.dashboard>
-    <x-navbar title="History Order"/>
+    <x-navbar title="Histori Order"/>
     <x-toast />
 
     <div class="p-4">

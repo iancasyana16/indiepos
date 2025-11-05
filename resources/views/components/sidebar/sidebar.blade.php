@@ -24,14 +24,14 @@
                 <x-sidebar.side-link :route="'order.index'" :activeMatch="'order.*'">Order</x-sidebar.side-link>
             @endif
 
-                <x-sidebar.side-link :route="'history-order.index'" :activeMatch="'history-order.*'">History Order</x-sidebar.side-link>
+                <x-sidebar.side-link :route="'history-order.index'" :activeMatch="'history-order.*'">Histori Order</x-sidebar.side-link>
 
             @if ($role === 'admin')
                 <x-sidebar.side-link :route="'product.index'" :activeMatch="'product.*'">Produk</x-sidebar.side-link>
-                <x-sidebar.side-link :route="'account.index'" :activeMatch="'account.*'">Account</x-sidebar.side-link>
+                <x-sidebar.side-link :route="'account.index'" :activeMatch="'account.*'">Akun</x-sidebar.side-link>
             @endif
 
-                <x-sidebar.side-link :route="'setting.index'" :activeMatch="'setting.*'">Setting</x-sidebar.side-link>
+                <x-sidebar.side-link :route="'setting.index'" :activeMatch="'setting.*'">Pengaturan</x-sidebar.side-link>
         </nav>
     </div>
 
@@ -40,7 +40,7 @@
         @csrf
         <button type="submit"
             class="block w-full px-4 py-2 text-white text-center bg-red-600 hover:bg-red-800 rounded">
-            Logout
+            Keluar
         </button>
     </form>
 </aside>
